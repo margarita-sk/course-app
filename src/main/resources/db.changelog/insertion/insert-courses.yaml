@@ -1,0 +1,21 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: insertion-01
+      author: marharyta
+      changes:
+        - insert:
+            tableName: COURSES
+            columns:
+              - column:
+                  name: NAME
+                  value: ""
+              - column:
+                  name: DESCRIPTION
+                  value: ""
+              - column:
+                  name: START_ASSIGNMENT_DATE
+                  value: ""
+              - column:
+                  name: END_ASSIGNMENT_DATE
+                  value: ""

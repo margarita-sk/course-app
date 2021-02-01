@@ -1,0 +1,12 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: insertion-03
+      author: marharyta
+      changes:
+        - insert:
+            tableName: TASKS
+            columns:
+              - column:
+                  name: NAME
+                  value: ""

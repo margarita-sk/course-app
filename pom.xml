@@ -15,7 +15,10 @@
     <description>Microservice to assign for courserses</description>
     <properties>
         <java.version>11</java.version>
+        <liquibase.version>4.2.2</liquibase.version>
     </properties>
+
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -34,11 +37,22 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- database -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

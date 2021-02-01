@@ -1,0 +1,20 @@
+databaseChangeLog:
+       - include:
+           file: db/changelog/creation/create-courses.yaml
+
+       - include:
+           file: db/changelog/creation/create-tags.yaml
+
+       - include:
+           file: db/changelog/creation/create-tasks.yaml
+
+       - include:
+           file: db/changelog/insertion/insert-courses.yaml
+
+       - include:
+           file: db/changelog/insertion/insert-tags.yaml
+
+       - include:
+           file: db/changelog/insertion/insert-tasks.yaml
+
+
