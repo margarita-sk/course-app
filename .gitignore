@@ -1,4 +1,6 @@
-/*
-!src
-!pom.xml
-!README.md
+.idea
+.mvn
+course-app.iml
+HELP.md
+mvnw.cmd
+mvnw
