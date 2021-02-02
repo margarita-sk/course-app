@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: creation-05
+      author: marharyta
+      changes:
+        - createTable:
+            tableName: COURSE_TAG
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: ID_COURSE
+                  type: int
+              - column:
+                  constraints:
+                    nullable: false
+                  name: ID_TAG
+                  type: int
+  - changeSet:
+      id: creation-06
+      author: marharyta
+      changes:
+        - addPrimaryKey:
+            columnNames: ID_COURSE, ID_TAG
+            tableName: COURSE_TAG
+  - changeSet:
+      id: creation-07
+      author: marharyta
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: ID_COURSE
+            baseTableName: COURSE_TAG
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: ID
+            referencedTableName: COURSES
+            constraintName: FK2o0jvgh89lemvvo17cbqvdxee
+  - changeSet:
+      id: creation-08
+      author: marharyta
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: ID_TAG
+            baseTableName: COURSE_TAG
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: ID
+            referencedTableName: TAGS
+            constraintName: FK2o0jvgh89lemvvo17cbqvdxrr

@@ -1,6 +1,9 @@
 package com.leverx.courseapp.course.model;
 
+import com.leverx.courseapp.tag.model.Tag;
+import com.leverx.courseapp.task.model.Task;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,11 +31,14 @@ public class Course {
     @Column(name = "END_ASSIGNMENT_DATE")
     private LocalDate endAssignmentDate;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToMany(targetEntity = Task.class, mappedBy = "course", fetch = FetchType.LAZY)
     private Collection<Task> tasks;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "COURSE_TAG",
+            joinColumns = @JoinColumn(name = "ID_COURSE"),
+            inverseJoinColumns = @JoinColumn(name = "ID_TAG"))
     private Collection<Tag> tags;
 
 

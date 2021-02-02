@@ -1,12 +1,11 @@
 databaseChangeLog:
-
   - changeSet:
-      id: insertion-03
+      id: insertion-02
       author: marharyta
       changes:
         - insert:
-            tableName: TASKS
+            tableName: TAGS
             columns:
               - column:
                   name: NAME
-                  value: ""
+                  value: "Cooking"

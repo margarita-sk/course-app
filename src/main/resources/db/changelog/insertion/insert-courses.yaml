@@ -1,5 +1,4 @@
 databaseChangeLog:
-
   - changeSet:
       id: insertion-01
       author: marharyta
@@ -9,13 +8,13 @@ databaseChangeLog:
             columns:
               - column:
                   name: NAME
-                  value: ""
+                  value: "Baking cookies"
               - column:
                   name: DESCRIPTION
-                  value: ""
+                  value: "You will learn everything about cookies "
               - column:
                   name: START_ASSIGNMENT_DATE
-                  value: ""
+                  value: "2021-02-13"
               - column:
                   name: END_ASSIGNMENT_DATE
-                  value: ""
+                  value: "2021-03-13"

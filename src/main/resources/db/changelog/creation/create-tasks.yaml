@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: creation-03
+      author: marharyta
+      changes:
+        - createTable:
+            tableName: TASKS
+            columns:
+              - column:
+                  name: ID
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    - primaryKey: true
+                    - nullable: false
+              - column:
+                  name: NAME
+                  type: varchar(100)
+              - column:
+                  name: STATUS
+                  type: varchar(100)
+              - column:
+                  name: ID_COURSE
+                  type: int
+  - changeSet:
+      id: creation-04
+      author: marharyta
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: ID_COURSE
+            baseTableName: TASKS
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: ID
+            referencedTableName: COURSES
+            constraintName: FK2o0jvgh89lemvvo17cbqvdxaa

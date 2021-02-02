@@ -9,12 +9,18 @@ databaseChangeLog:
            file: db/changelog/creation/create-tasks.yaml
 
        - include:
+           file: db/changelog/creation/create-course-tag.yaml
+
+       - include:
            file: db/changelog/insertion/insert-courses.yaml
+
+       - include:
+          file: db/changelog/insertion/insert-tasks.yaml
 
        - include:
            file: db/changelog/insertion/insert-tags.yaml
 
        - include:
-           file: db/changelog/insertion/insert-tasks.yaml
+           file: db/changelog/insertion/insert-course-tag.yaml
 
 
