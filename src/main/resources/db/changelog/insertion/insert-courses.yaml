@@ -14,7 +14,22 @@ databaseChangeLog:
                   value: "You will learn everything about cookies "
               - column:
                   name: START_ASSIGNMENT_DATE
-                  value: "2021-02-13"
+                  value: "2021-02-02"
               - column:
                   name: END_ASSIGNMENT_DATE
                   value: "2021-03-13"
+        - insert:
+            tableName: COURSES
+            columns:
+              - column:
+                  name: NAME
+                  value: "DBMS"
+              - column:
+                  name: DESCRIPTION
+                  value: "You will learn everything about DBMS "
+              - column:
+                  name: START_ASSIGNMENT_DATE
+                  value: "2021-03-02"
+              - column:
+                  name: END_ASSIGNMENT_DATE
+                  value: "2021-04-11"

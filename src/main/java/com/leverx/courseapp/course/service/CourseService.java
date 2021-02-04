@@ -1,31 +1,27 @@
 package com.leverx.courseapp.course.service;
 
+import com.leverx.courseapp.course.dto.CourseDto;
 import com.leverx.courseapp.course.model.Course;
-import com.leverx.courseapp.task.model.Task;
-import com.leverx.courseapp.tag.model.Tag;
-
 import java.time.LocalDate;
 import java.util.Collection;
 
 public interface CourseService {
 
-    Course receiveCourseById(int id);
+  Collection<Course> getAll();
 
-    Collection<Course> receiveAllCourses();
+  Course findCourseById(int id);
 
-    Collection<Course> receiveCoursesByDate(LocalDate date);
+  Collection<Course> findCoursesByDate(LocalDate date);
 
-    Collection<Course> receiveCoursesByTags(Collection<Tag> tags);
+  Collection<Course> findCoursesByTags(Collection<String> tagsNames);
 
-    Collection<Course> receiveCoursesByName(String name);
+  Collection<Course> findCoursesByName(String name);
 
-    void addCourse(Course course);
+  Collection<Course> findCoursesByStudentName(String name);
 
-    void deleteCourse(int id);
+  void addCourse(CourseDto courseDto);
 
-    void editCourse(Course course);
+  void removeCourseById(int id);
 
-
-
-
+  Course updateCourseById(int id, CourseDto courseDto);
 }

@@ -10,10 +10,10 @@ databaseChangeLog:
                   name: NAME
                   value: "Learn how to choose right products"
               - column:
-                  name: STATUS
-                  value: "NOT_STARTED"
+                  name: DESCRIPTION
+                  value: "First step is..., second ..."
               - column:
-                  name: ID_COURSE
+                  name: COURSE_ID
                   value: 1
         - insert:
             tableName: TASKS
@@ -22,8 +22,8 @@ databaseChangeLog:
                   name: NAME
                   value: "Bake biscuits"
               - column:
-                  name: STATUS
-                  value: "NOT_STARTED"
+                  name: DESCRIPTION
+                  value: "First step is..., second ..."
               - column:
-                  name: ID_COURSE
+                  name: COURSE_ID
                   value: 1

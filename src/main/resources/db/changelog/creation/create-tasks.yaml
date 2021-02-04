@@ -17,17 +17,17 @@ databaseChangeLog:
                   name: NAME
                   type: varchar(100)
               - column:
-                  name: STATUS
-                  type: varchar(100)
+                  name: DESCRIPTION
+                  type: varchar(255)
               - column:
-                  name: ID_COURSE
+                  name: COURSE_ID
                   type: int
   - changeSet:
       id: creation-04
       author: marharyta
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: ID_COURSE
+            baseColumnNames: COURSE_ID
             baseTableName: TASKS
             deferrable: false
             initiallyDeferred: false

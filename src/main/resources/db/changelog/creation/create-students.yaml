@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: creation-10
+      author: marharyta
+      changes:
+        - createTable:
+            tableName: STUDENTS
+            columns:
+              - column:
+                  name: ID
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    - primaryKey: true
+                    - nullable: false
+              - column:
+                  name: EMAIL
+                  type: varchar(100)
+              - column:
+                  name: NAME
+                  type: varchar(100)
+              - column:
+                  name: PASSWORD
+                  type: varchar(100)
+              - column:
+                  name: FACULTY
+                  type: varchar(100)

@@ -9,26 +9,26 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: ID_COURSE
+                  name: COURSE_ID
                   type: int
               - column:
                   constraints:
                     nullable: false
-                  name: ID_TAG
+                  name: TAG_ID
                   type: int
   - changeSet:
       id: creation-06
       author: marharyta
       changes:
         - addPrimaryKey:
-            columnNames: ID_COURSE, ID_TAG
+            columnNames: COURSE_ID, TAG_ID
             tableName: COURSE_TAG
   - changeSet:
       id: creation-07
       author: marharyta
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: ID_COURSE
+            baseColumnNames: COURSE_ID
             baseTableName: COURSE_TAG
             deferrable: false
             initiallyDeferred: false
@@ -40,7 +40,7 @@ databaseChangeLog:
       author: marharyta
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: ID_TAG
+            baseColumnNames: TAG_ID
             baseTableName: COURSE_TAG
             deferrable: false
             initiallyDeferred: false

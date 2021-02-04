@@ -1,17 +1,24 @@
 package com.leverx.courseapp.user.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
-public class User {
+@Table(name = "USERS")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+abstract class User {
 
-    @Id
-    private int id;
+  @Id
+  @Column(name = "ID")
+  private int id;
 
-    private String email;
+  @Column(name = "EMAIL")
+  private String email;
 
-    private String name;
+  @Column(name = "NAME")
+  private String name;
 
-
+  @Column(name = "PASSWORD")
+  private char[] password;
 }

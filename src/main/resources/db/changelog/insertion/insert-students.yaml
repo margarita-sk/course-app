@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertion-06
+      author: marharyta
+      changes:
+        - insert:
+            tableName: STUDENTS
+            columns:
+              - column:
+                  name: ID
+                  value: 1
+              - column:
+                  name: NAME
+                  value: "student"
+              - column:
+                  name: EMAIL
+                  value: "student@student.com"
+              - column:
+                  name: PASSWORD
+                  value: "student"
+              - column:
+                  name: FACULTY
+                  value: "general medicine"

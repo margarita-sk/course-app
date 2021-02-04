@@ -1,75 +1,88 @@
 package com.leverx.courseapp.course.controller;
 
+import com.leverx.courseapp.course.dto.CourseDto;
 import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.service.CourseService;
-import com.leverx.courseapp.tag.model.Tag;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.leverx.courseapp.user.service.StudentService;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 @AllArgsConstructor
 public class CourseController {
 
     private CourseService service;
+    private StudentService studentService;
 
     @GetMapping("/")
     public Collection<String> startPage() {
         var uri = new ArrayList<String>();
-        uri.add("/course/{id}");
+        uri.add("/courses/{id}");
+        uri.add("/courses");
+        uri.add("/courses/find-by-date");
+        uri.add("/courses/find-by-tags");
+        uri.add("/courses/find-by-name");
         return uri;
     }
 
-    //TODO: resolve the bug
-    // here we have a problem of parsing Course into JSON. Unfortunately,
-    // it turns into endless cycle of getting tags from courses and courses from tags
-    // and the same thing with tasks.
-    @GetMapping("/course/{id}")
-    public String receiveCourseById(@PathVariable int id) {
-        var course = service.receiveCourseById(id);
-        return course.toString();
+    @GetMapping("/courses/{id}")
+    public Course receiveCourseById(@PathVariable int id) {
+        var course = service.findCourseById(id);
+        return course;
     }
 
     @GetMapping("/courses")
     public Collection<Course> receiveAllCourses() {
-        var courses = service.receiveAllCourses();
+        var courses = service.getAll();
         return courses;
     }
 
-    @GetMapping("/courses/{date}")
-    public Collection<Course> receiveCoursesByDate(@PathVariable LocalDate date) {
-        var courses = service.receiveCoursesByDate(date);
+    // TODO: I'm not sure i can use this uri
+    @GetMapping("/courses/find-by-date")
+    public Collection<Course> receiveCoursesByDate(@RequestParam String date) {
+        var course = service.findCoursesByDate(LocalDate.parse(date));
+        return course;
+    }
+
+    // TODO make something with exceptions
+    @GetMapping("/courses/find-by-tags")
+    public Collection<Course> receiveCoursesByTags(@RequestParam List<String> tags) {
+        var courses = service.findCoursesByTags(tags);
         return courses;
     }
 
-    @GetMapping("/courses/{tags}")
-    public Collection<Course> receiveCoursesByTags(@PathVariable List<Tag> tags) {
-        var courses = service.receiveCoursesByTags(tags);
+    @GetMapping("/courses/find-by-name")
+    public Collection<Course> receiveCoursesByName(@RequestParam String name) {
+        var courses = service.findCoursesByName(name);
         return courses;
     }
 
-    @GetMapping("/courses/{name}")
-    public Collection<Course> receiveCoursesByName(@PathVariable String name) {
-        var courses = service.receiveCoursesByName(name);
+    @GetMapping("/courses/find-by-student")
+    public Collection<Course> receiveCoursesByStudent(@RequestParam String name) {
+        var student = studentService.findStudentByName(name);
+        var courses = service.findCoursesByStudentName(name);
         return courses;
     }
 
-    @PostMapping("/course")
-    public void addCourse(Course course) {
-        service.addCourse(course);
+    @PostMapping("/courses")
+    public void addCourse(@ModelAttribute CourseDto courseDto) {
+        service.addCourse(courseDto);
     }
 
-    @DeleteMapping("/course/{id}")
+    @DeleteMapping("/courses/{id}")
     public void deleteCourse(@PathVariable int id) {
-        service.deleteCourse(id);
+        service.removeCourseById(id);
     }
 
-    @PutMapping("/course/{id}")
-    public void editCourse(@PathVariable Course course) {
-        service.editCourse(course);
+    @PutMapping("/courses/{id}")
+    public Course editCourse(@PathVariable int id, @ModelAttribute CourseDto courseDto) {
+        var course = service.updateCourseById(id, courseDto);
+        return course;
     }
 }

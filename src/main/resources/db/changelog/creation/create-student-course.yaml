@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: creation-10
+      author: marharyta
+      changes:
+        - createTable:
+            tableName: STUDENT_COURSE_ASSIGNMENT
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: STUDENT_ID
+                  type: int
+              - column:
+                  constraints:
+                    nullable: false
+                  name: COURSE_ID
+                  type: int
+  - changeSet:
+      id: creation-11
+      author: marharyta
+      changes:
+        - addPrimaryKey:
+            columnNames: COURSE_ID, STUDENT_ID
+            tableName: STUDENT_COURSE_ASSIGNMENT
+  - changeSet:
+      id: creation-12
+      author: marharyta
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: STUDENT_ID
+            baseTableName: STUDENT_COURSE_ASSIGNMENT
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: ID
+            referencedTableName: STUDENTS
+            constraintName: FK2o0jvgh89lemvvo17cbqvdxekkk
+  - changeSet:
+      id: creation-08
+      author: marharyta
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: COURSE_ID
+            baseTableName: STUDENT_COURSE_ASSIGNMENT
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: ID
+            referencedTableName: COURSES
+            constraintName: FK2o0jvgh89lemvvo17cbqvdxnnb

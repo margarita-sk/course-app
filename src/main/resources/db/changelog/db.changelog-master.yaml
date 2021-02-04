@@ -12,6 +12,15 @@ databaseChangeLog:
            file: db/changelog/creation/create-course-tag.yaml
 
        - include:
+           file: db/changelog/creation/create-students.yaml
+
+       - include:
+           file: db/changelog/creation/create-admins.yaml
+
+       - include:
+           file: db/changelog/creation/create-student-course.yaml
+
+       - include:
            file: db/changelog/insertion/insert-courses.yaml
 
        - include:
@@ -23,4 +32,11 @@ databaseChangeLog:
        - include:
            file: db/changelog/insertion/insert-course-tag.yaml
 
+       - include:
+           file: db/changelog/insertion/insert-admins.yaml
 
+       - include:
+           file: db/changelog/insertion/insert-students.yaml
+
+       - include:
+           file: db/changelog/insertion/insert-student-course.yaml

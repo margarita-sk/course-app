@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: creation-12
+      author: marharyta
+      changes:
+        - createTable:
+            tableName: ADMINS
+            columns:
+              - column:
+                  name: ID
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    - primaryKey: true
+                    - nullable: false
+              - column:
+                  name: EMAIL
+                  type: varchar(100)
+              - column:
+                  name: NAME
+                  type: varchar(100)
+              - column:
+                  name: PASSWORD
+                  type: varchar(100)
+              - column:
+                  name: EXPERATION_DATE
+                  type: date
