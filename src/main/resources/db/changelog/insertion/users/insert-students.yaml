@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertion-06
+      author: marharyta
+      changes:
+        - insert:
+            tableName: STUDENTS
+            columns:
+              - column:
+                  name: STUDENT_ID
+                  value: 2
+              - column:
+                  name: FACULTY
+                  value: "general medicine"

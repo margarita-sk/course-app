@@ -1,0 +1,17 @@
+{
+    "file_suffixes" : {
+        "hdbdropcreatetable" : {
+            "plugin_name" : "com.sap.hana.di.dropcreatetable"
+        },
+        "hdbtabledata" : {
+            "plugin_name" : "com.sap.hana.di.tabledata",
+            "plugin_version": "2.0.0.0"
+        },
+        "hdbconstraint" :{
+            "plugin_name" : "com.sap.hana.di.constraint"
+        },
+        "csv" : {
+            "plugin_name" : "com.sap.hana.di.tabledata.source"
+        }
+    }
+}
