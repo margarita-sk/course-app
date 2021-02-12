@@ -1,5 +1,7 @@
 .idea
 .mvn
+/mta_archives/
+package-lock.json
 course-app.iml
 HELP.md
 mvnw.cmd
