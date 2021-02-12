@@ -32,7 +32,7 @@ databaseChangeLog:
             baseTableName: STUDENT_COURSE_ASSIGNMENT
             deferrable: false
             initiallyDeferred: false
-            referencedColumnNames: ID
+            referencedColumnNames: STUDENT_ID
             referencedTableName: STUDENTS
             constraintName: FK2o0jvgh89lemvvo17cbqvdxekkk
   - changeSet:

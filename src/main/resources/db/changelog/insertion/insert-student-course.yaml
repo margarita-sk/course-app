@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: STUDENT_ID
-                  value: 1
+                  value: 2
               - column:
                   name: COURSE_ID
                   value: 1
@@ -17,7 +17,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: STUDENT_ID
-                  value: 1
+                  value: 2
               - column:
                   name: COURSE_ID
                   value: 2

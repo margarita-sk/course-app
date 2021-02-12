@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertion-07
+      author: marharyta
+      changes:
+        - insert:
+            tableName: ADMINS
+            columns:
+              - column:
+                  name: ADMIN_ID
+                  value: 1
+              - cloumn:
+                  name: EXPERATION_DATE
+                  value: "9999-01-01"

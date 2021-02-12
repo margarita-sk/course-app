@@ -1,17 +1,22 @@
 package com.leverx.courseapp.user.service;
 
 import com.leverx.courseapp.user.dto.StudentDto;
+import com.leverx.courseapp.user.dto.StudentDtoParam;
 import com.leverx.courseapp.user.model.Student;
-import org.springframework.stereotype.Service;
 
-@Service
+import java.util.Collection;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+
 public interface StudentService {
 
-    Student findStudentByName(String name);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    Collection<StudentDtoParam> receiveAll();
 
-    Student registerStudent(StudentDto studentDto);
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     void deleteStudent(int id);
 
-    Student editStudent(int id, StudentDto studentDto);
+    Student findStudentById(int id);
+
+    Student registerStudent(StudentDto studentDto);
 }

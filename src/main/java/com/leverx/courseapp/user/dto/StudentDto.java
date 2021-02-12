@@ -2,15 +2,20 @@ package com.leverx.courseapp.user.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 public class StudentDto {
 
+  @NotNull
+  private String email;
 
-    private String email;
+  @NotNull
+  private String name;
 
-    private String name;
+  @NotNull
+  private char[] password;
 
-    private char[] password;
-
-    private String faculty;
+  @NotNull
+  private String faculty;
 }
