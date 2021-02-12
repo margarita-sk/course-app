@@ -1,4 +1,13 @@
-/*
-!src
-!pom.xml
-!README.md
+.idea
+.mvn
+course-app.iml
+db
+mta_archives
+target
+HELP.md
+mvnw.cmd
+mvnw
+course-app.iml
+mvnw.cmd
+mvnw
+package-lock.json
