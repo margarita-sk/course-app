@@ -7,5 +7,5 @@ public class UserDto {
 
     private String username;
 
-    private char[] password;
+    private String password;
 }

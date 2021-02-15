@@ -5,9 +5,9 @@ import lombok.*;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "TASKS")
 public class Task {
 
@@ -26,4 +26,5 @@ public class Task {
   @NonNull
   @Column(name = "COURSE_ID")
   private int courseId;
+
 }

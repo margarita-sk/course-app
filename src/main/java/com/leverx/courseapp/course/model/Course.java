@@ -36,10 +36,10 @@ public class Course {
   @Column(name = "END_ASSIGNMENT_DATE")
   private LocalDate endAssignmentDate;
 
-  @OneToMany(mappedBy = "courseId")
+  @OneToMany(mappedBy = "courseId", cascade = CascadeType.REMOVE)
   private Collection<Task> tasks;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany
   @JoinTable(
       name = "COURSE_TAG",
       joinColumns = @JoinColumn(name = "COURSE_ID"),

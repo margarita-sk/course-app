@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
@@ -36,9 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public UserDetails findByNameAndPassword(String name, String password) throws WrongPasswordException {
         var user = loadUserByUsername(name);
-        System.out.println(user.getPassword());
-        System.out.println(password);
-        if(bCryptPasswordEncoder.matches(password, user.getPassword())) {
+        if(encoder.matches(password, user.getPassword())) {
             return user;
         } else {
             throw new WrongPasswordException();

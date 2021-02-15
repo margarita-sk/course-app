@@ -1,7 +1,8 @@
 package com.leverx.courseapp.user.service;
 
 import com.leverx.courseapp.user.dto.StudentDto;
-import com.leverx.courseapp.user.dto.StudentDtoParam;
+import com.leverx.courseapp.user.dto.StudentDtoShort;
+import com.leverx.courseapp.user.exception.NoSuchStudentException;
 import com.leverx.courseapp.user.model.Role;
 import com.leverx.courseapp.user.model.Student;
 import com.leverx.courseapp.user.repository.StudentRepository;
@@ -10,9 +11,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import com.leverx.courseapp.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,13 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
-    private final BCryptPasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     @Override
-    public Collection<StudentDtoParam> receiveAll() {
+    public Collection<StudentDtoShort> receiveAll() {
         var students =
                 StreamSupport.stream(studentRepository.findAll().spliterator(), false)
-                        .map(student -> new StudentDtoParam(student.getId(), student.getName(), student.getFaculty()))
+                        .map(student -> new StudentDtoShort(student.getId(), student.getName(), student.getFaculty()))
                         .collect(Collectors.toList());
         return students;
     }
@@ -49,8 +48,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student findStudentById(int id) {
-        var student = studentRepository.findById(id);
-        return student.orElseThrow(RuntimeException::new);
+        var student = studentRepository.findById(id).orElseThrow(() -> {
+            throw new NoSuchStudentException(id);
+        });
+        return student;
     }
 
 

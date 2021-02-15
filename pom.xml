@@ -43,6 +43,12 @@
             <version>${liquibase.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -50,11 +56,6 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-        </dependency>
 
         <!--   DB connection dependencies -->
         <dependency>
@@ -115,6 +116,17 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.11.0</version>
+        </dependency>
+
         <!-- tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -140,51 +152,51 @@
             </plugin>
 
 
-<!--            <plugin>-->
-<!--                <groupId>com.diffplug.spotless</groupId>-->
-<!--                <artifactId>spotless-maven-plugin</artifactId>-->
-<!--                <version>${spotless-maven-plugin.version}</version>-->
-<!--                <configuration>-->
-<!--                    <java>-->
-<!--                        <includes>-->
-<!--                            <include>src/main/java/**/*.java</include>-->
-<!--                            <include>src/test/java/**/*.java</include>-->
-<!--                        </includes>-->
-<!--                        <googleJavaFormat>-->
-<!--                            <style>GOOGLE</style>-->
-<!--                        </googleJavaFormat>-->
-<!--                    </java>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>compile</phase>-->
-<!--                        <id>google-check-style</id>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>com.diffplug.spotless</groupId>-->
+            <!--                <artifactId>spotless-maven-plugin</artifactId>-->
+            <!--                <version>${spotless-maven-plugin.version}</version>-->
+            <!--                <configuration>-->
+            <!--                    <java>-->
+            <!--                        <includes>-->
+            <!--                            <include>src/main/java/**/*.java</include>-->
+            <!--                            <include>src/test/java/**/*.java</include>-->
+            <!--                        </includes>-->
+            <!--                        <googleJavaFormat>-->
+            <!--                            <style>GOOGLE</style>-->
+            <!--                        </googleJavaFormat>-->
+            <!--                    </java>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>compile</phase>-->
+            <!--                        <id>google-check-style</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>check</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
 
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--                <version>${checkstyle-maven-plugin.version}</version>-->
-<!--                <configuration>-->
-<!--                    <configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>-->
-<!--                    <violationSeverity>warning</violationSeverity>-->
-<!--                    <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>compile</phase>-->
-<!--                        <id>check-style</id>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
+            <!--                <version>${checkstyle-maven-plugin.version}</version>-->
+            <!--                <configuration>-->
+            <!--                    <configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>-->
+            <!--                    <violationSeverity>warning</violationSeverity>-->
+            <!--                    <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>compile</phase>-->
+            <!--                        <id>check-style</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>check</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
 
         </plugins>
     </build>

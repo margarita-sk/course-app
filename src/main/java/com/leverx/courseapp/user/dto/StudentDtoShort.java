@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class StudentDtoParam {
+public class StudentDtoShort {
 
   private int id;
 

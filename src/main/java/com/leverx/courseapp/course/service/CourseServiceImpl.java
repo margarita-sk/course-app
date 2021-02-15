@@ -1,7 +1,7 @@
 package com.leverx.courseapp.course.service;
 
 import com.leverx.courseapp.course.dto.CourseDto;
-import com.leverx.courseapp.course.dto.CourseDtoParam;
+import com.leverx.courseapp.course.dto.CourseDtoShort;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.repository.CourseRepository;
@@ -17,46 +17,46 @@ import java.util.stream.StreamSupport;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional
 @AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository repository;
     private final TagRepository tagRepository;
-    private final StudentRepository studentRepository;
 
     @Override
-    public Collection<CourseDtoParam> getAll() {
+    public Collection<CourseDtoShort> getAll() {
         var courseDtoParams =
                 StreamSupport.stream(repository.findAll().spliterator(), false)
-                        .map(course -> new CourseDtoParam(course.getName(), course.getDescription()))
+                        .map(course -> new CourseDtoShort(course.getName(), course.getDescription()))
                         .collect(Collectors.toList());
         return courseDtoParams;
     }
 
     @Override
-    public Course findCourseById(int id) {
-        var course = repository.findById(id).orElseThrow(NoSuchCourseException::new);
-        //    var courseDto = new CourseDtoParam(course.getName(), course.getDescription());
-        return course;
+    public CourseDto findCourseById(int id) {
+        var course = repository.findById(id).orElseThrow(() -> {
+            throw new NoSuchCourseException(id);
+        });
+        var tags = course.getTags().stream().map(tag -> tag.getName()).collect(Collectors.toList());
+        var courseDto = new CourseDto(course.getName(), course.getDescription(), course.getStartAssignmentDate(), course.getEndAssignmentDate(), tags);
+        return courseDto;
     }
 
 
-
     @Override
-    public Collection<CourseDtoParam> findCoursesByDate(LocalDate date) {
+    public Collection<CourseDtoShort> findCoursesByDate(LocalDate date) {
         var courses =
                 repository.findByStartAssignmentDateLessThanEqualAndEndAssignmentDateGreaterThanEqual(
                         date, date);
-        var courseDtoParams = transformCoursesToCoursesDtoParams(courses);
+        var courseDtoParams = transformCoursesToCoursesDtoShort(courses);
         return courseDtoParams;
     }
 
     @Override
-    public Collection<CourseDtoParam> findCoursesByTags(Collection<String> tagsNames) {
+    public Collection<CourseDtoShort> findCoursesByTags(Collection<String> tagsNames) {
         var tags =
                 tagsNames.stream()
                         .map(
@@ -66,30 +66,30 @@ public class CourseServiceImpl implements CourseService {
                                                 .orElseThrow(TagNotFoundException::new))
                         .collect(Collectors.toList());
         var courses = repository.findCoursesByTagsIn(tags);
-        var courseDtoParams = transformCoursesToCoursesDtoParams(courses);
+        var courseDtoParams = transformCoursesToCoursesDtoShort(courses);
         return courseDtoParams;
     }
 
     @Override
-    public Collection<CourseDtoParam> findCoursesByName(String name) {
+    public Collection<CourseDtoShort> findCoursesByName(String name) {
         var courses = repository.findCoursesByNameContains(name);
-        var courseDtoParams = transformCoursesToCoursesDtoParams(courses);
+        var courseDtoParams = transformCoursesToCoursesDtoShort(courses);
         return courseDtoParams;
     }
 
     @Override
-    public Collection<CourseDtoParam> findCourses(String name, LocalDate date, Collection<String> tagsNames) {
-        if(name != null)
+    public Collection<CourseDtoShort> findCourses(String name, LocalDate date, Collection<String> tagsNames) {
+        if (name != null)
             return findCoursesByName(name);
-        if(date != null)
+        if (date != null)
             return findCoursesByDate(date);
-        if(tagsNames != null)
+        if (tagsNames != null)
             return findCoursesByTags(tagsNames);
         return getAll();
     }
 
     @Override
-    public void addCourse(CourseDto courseDto) {
+    public CourseDto addCourse(CourseDto courseDto) {
         var course =
                 new Course(
                         courseDto.getName(),
@@ -97,17 +97,22 @@ public class CourseServiceImpl implements CourseService {
                         courseDto.getStartAssignmentDate(),
                         courseDto.getEndAssignmentDate());
         repository.save(course);
+        return courseDto;
     }
 
     @Override
     public void removeCourseById(int id) {
-        var course = repository.findById(id).orElseThrow(NoSuchCourseException::new);
+        var course = repository.findById(id).orElseThrow(() -> {
+            throw new NoSuchCourseException(id);
+        });
         repository.delete(course);
     }
 
     @Override
-    public Course updateCourseById(int id, CourseDto courseDto) {
-        var course = repository.findById(id).orElseThrow(NoSuchCourseException::new);
+    public CourseDto updateCourseById(int id, CourseDto courseDto) {
+        var course = repository.findById(id).orElseThrow(() -> {
+            throw new NoSuchCourseException(id);
+        });
         var changedCourse =
                 new Course(
                         course.getId(),
@@ -119,13 +124,13 @@ public class CourseServiceImpl implements CourseService {
                         course.getTags(),
                         course.getStudents());
         repository.save(changedCourse);
-        return changedCourse;
+        return courseDto;
     }
 
-    public Collection<CourseDtoParam> transformCoursesToCoursesDtoParams(Collection<Course> courses) {
+    public Collection<CourseDtoShort> transformCoursesToCoursesDtoShort(Collection<Course> courses) {
         var courseDtoParams =
                 courses.stream()
-                        .map(course -> new CourseDtoParam(course.getName(), course.getDescription()))
+                        .map(course -> new CourseDtoShort(course.getName(), course.getDescription()))
                         .collect(Collectors.toList());
         return courseDtoParams;
     }

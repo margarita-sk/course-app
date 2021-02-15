@@ -20,7 +20,4 @@ public class Tag {
   @Column(name = "NAME")
   private String name;
 
-  @JsonIgnore
-  @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-  private Collection<Course> courses;
 }

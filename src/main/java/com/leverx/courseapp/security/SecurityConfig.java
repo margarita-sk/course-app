@@ -1,45 +1,60 @@
 package com.leverx.courseapp.security;
 
-import com.leverx.courseapp.security.jwt.JwtTokenFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
 
     @Override
-    public void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .authorizeRequests()
-                .antMatchers("/courses").authenticated()
-                .antMatchers("/tags").authenticated()
-                .antMatchers("/tasks").authenticated()
-                .antMatchers("/students", "/auth").permitAll();
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .cors()
+                .and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests(configurer ->
+                        configurer
+                                .antMatchers(
+                                        HttpMethod.GET, "/courses/**",
+                                        "/tags"
+                                )
+                                .permitAll()
+                                .antMatchers( "/users/token")
+                                .permitAll()
+                                .antMatchers(HttpMethod.POST, "/students")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
 
+                )
+//                .exceptionHandling().disable()
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs")//
-                .antMatchers("/swagger-resources/**")//
-                .antMatchers("/swagger-ui.html")//
-                .antMatchers("/configuration/**")//
-                .antMatchers("/webjars/**")//
-                .antMatchers("/public");
+        web.ignoring().antMatchers("/v2/api-docs/**")
+                .antMatchers("/swagger-resources/**")
+                .antMatchers("/swagger-ui/**");
     }
 }

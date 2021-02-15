@@ -1,9 +1,12 @@
 package com.leverx.courseapp.task.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class TaskDtoParam {
+@AllArgsConstructor
+public class TaskDtoShort {
 
   private String name;
+
 }

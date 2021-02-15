@@ -1,7 +1,7 @@
 .idea
 .mvn
 course-app.iml
-db
+db/node_modules
 mta_archives
 target
 HELP.md
