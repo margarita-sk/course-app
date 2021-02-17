@@ -1,27 +1,24 @@
 package com.leverx.courseapp.user.controller;
 
+import com.leverx.courseapp.course.dto.CourseDtoShort;
 import com.leverx.courseapp.user.dto.StudentDto;
 import com.leverx.courseapp.user.dto.StudentDtoShort;
-import com.leverx.courseapp.user.model.Student;
 import com.leverx.courseapp.user.service.StudentService;
 import java.util.Collection;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
 @Api(value = "students")
 @ApiResponses(value = {
         @ApiResponse(code = 400, message = "Bad Request"),
-        @ApiResponse(code = 404, message = "Not Found"),
         @ApiResponse(code = 500, message = "Internal Server Error")
 })
 @RequestMapping(path = "/students", produces = "application/json")
@@ -31,6 +28,7 @@ public class StudentController {
 
   @ApiResponses(value = {
           @ApiResponse(code = 200, message = "OK"),
+          @ApiResponse(code = 404, message = "Not Found"),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
   @GetMapping
@@ -41,31 +39,44 @@ public class StudentController {
 
   @ApiResponses(value = {
           @ApiResponse(code = 200, message = "OK"),
+          @ApiResponse(code = 404, message = "Not Found"),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @GetMapping("/{id}")
-  public Student receiveStudentById(@PathVariable int id) {
-    var student = studentService.findStudentById(id);
+  @GetMapping("/courses")
+  public Collection<CourseDtoShort> receiveStudentsAllCourses(@RequestParam String name){
+    var courses = studentService.receiveCoursesByStudent(name);
+    return courses;
+  }
+
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = "OK"),
+          @ApiResponse(code = 404, message = "Not Found"),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @GetMapping("/account")
+  public StudentDto receiveStudentByName(@RequestParam String name, @AuthenticationPrincipal OidcUser user){
+    var student = studentService.receiveStudentByName(name, user);
     return student;
   }
 
   @ApiResponses(value = {
-          @ApiResponse(code = 201, message = "Student is created successfully")
-  })
-  @ResponseStatus(code = HttpStatus.ACCEPTED)
-  @PostMapping
-  public void registerStudent(@RequestBody @Valid StudentDto studentDto) {
-    studentService.registerStudent(studentDto);
-  }
-
-  @ApiOperation(value = "delete student")
-  @ApiResponses(value = {
-          @ApiResponse(code = 200, message = "Student was deleted successfully"),
+          @ApiResponse(code = 200, message = "OK"),
+          @ApiResponse(code = 404, message = "Not Found"),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @ResponseStatus(code = HttpStatus.OK)
-  @DeleteMapping("/{id}")
-  public void deleteStudent(@PathVariable int id) {
-    studentService.deleteStudent(id);
+  @PutMapping("/courses/{id}")
+  public void assignCourseToStudent(@PathVariable int id, @RequestParam String studentName){
+    studentService.assignCourseToStudent(id, studentName);
   }
+
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = "OK"),
+          @ApiResponse(code = 404, message = "Not Found"),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @DeleteMapping("/courses/{id}")
+  public void disassignCourseToStudent(@PathVariable int id, @RequestParam String studentName){
+    studentService.disassignCourseToStudent(id, studentName);
+  }
+
 }

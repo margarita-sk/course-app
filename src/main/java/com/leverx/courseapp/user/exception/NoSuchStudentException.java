@@ -2,7 +2,7 @@ package com.leverx.courseapp.user.exception;
 
 public class NoSuchStudentException extends RuntimeException {
 
-    public NoSuchStudentException(int id) {
-        super(String.format("Student with Id %d not found", id));
+    public NoSuchStudentException(String name) {
+        super(String.format("Student with name %d not found", name));
     }
 }

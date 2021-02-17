@@ -1,21 +1,19 @@
 package com.leverx.courseapp.user.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-
-@Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class StudentDto {
 
-  @NotNull
-  private String email;
-
-  @NotNull
+  @NonNull
   private String name;
 
-  @NotNull
-  private char[] password;
-
-  @NotNull
+  @NonNull
   private String faculty;
+
+  private String email;
 }

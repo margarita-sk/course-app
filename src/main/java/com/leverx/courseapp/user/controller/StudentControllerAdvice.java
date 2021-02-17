@@ -20,9 +20,10 @@ public class StudentControllerAdvice {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    // TODO
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(
             AccessDeniedException ex) {
-        return new ResponseEntity<>(Map.of("message", ex), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Map.of("message", ex.getLocalizedMessage()), HttpStatus.UNAUTHORIZED);
     }
 }

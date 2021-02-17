@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "tasks")
 @ApiResponses(value = {
         @ApiResponse(code = 400, message = "Bad Request"),
-        @ApiResponse(code = 404, message = "Not Found"),
         @ApiResponse(code = 500, message = "Internal Server Error")
 })
 @RequestMapping(value = "/courses/{id}/tasks", produces = "application/json")
@@ -28,6 +27,7 @@ public class TaskController {
     private final TaskService service;
 
     @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 200, message = "OK")
     })
     @GetMapping("/{taskId}")
@@ -37,6 +37,7 @@ public class TaskController {
     }
 
     @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 200, message = "OK")
     })
     @GetMapping

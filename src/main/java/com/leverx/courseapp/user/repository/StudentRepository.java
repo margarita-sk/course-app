@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface StudentRepository extends CrudRepository<Student, Integer> {
 
-  Student findByNameContains(String name);
+    Student findByNameContains(String studentName);
 }

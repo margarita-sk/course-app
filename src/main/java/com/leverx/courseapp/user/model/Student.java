@@ -3,16 +3,25 @@ package com.leverx.courseapp.user.model;
 import com.leverx.courseapp.course.model.Course;
 import java.util.Collection;
 import javax.persistence.*;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Entity
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "STUDENTS")
-@PrimaryKeyJoinColumn(name = "STUDENT_ID")
-public class Student extends User {
+public class Student {
+
+  @Id
+  @Column(name = "ID")
+  private String id;
+
+  @Column(name = "NAME")
+  private String name;
 
   @NonNull
   @Column(name = "FACULTY")
@@ -21,9 +30,4 @@ public class Student extends User {
   @ManyToMany(mappedBy = "students")
   private Collection<Course> courses;
 
-
-  public Student(String email, String name, String password, Role role, String faculty) {
-    super(email, name, password, role);
-    this.faculty = faculty;
-  }
 }

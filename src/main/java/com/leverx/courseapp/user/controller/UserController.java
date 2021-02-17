@@ -1,29 +1,15 @@
 package com.leverx.courseapp.user.controller;
 
-import com.leverx.courseapp.security.util.JwToken;
-import com.leverx.courseapp.security.util.JwtHelper;
-import com.leverx.courseapp.security.util.UserDetailsServiceImpl;
-import com.leverx.courseapp.user.dto.UserDto;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -37,14 +23,12 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "/users", produces = "application/json")
 public class UserController {
 
-    private final UserDetailsServiceImpl userService;
-    private final JwtHelper jwtHelper;
-
-
-    @PostMapping("/token")
-    public JwToken authenticateUser(@RequestBody UserDto userDto) {
-        var userDetails = userService.findByNameAndPassword(userDto.getUsername(), userDto.getPassword().toString());
-        var token = jwtHelper.createJwt(userDetails);
-        return token;
+    @RequestMapping("/authenticated")
+    public Map<String, String> getAuthenticatedUser(@AuthenticationPrincipal OidcUser user) {
+       var name = user.getFullName();
+       var email = user.getEmail();
+       var authorities = user.getAuthorities().toString();
+       return Map.of("name", name, "email", email, "authorities", authorities);
     }
+
 }

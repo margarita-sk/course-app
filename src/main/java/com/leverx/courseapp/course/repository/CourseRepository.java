@@ -7,7 +7,6 @@ import java.util.Collection;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface CourseRepository extends CrudRepository<Course, Integer> {
 
   Collection<Course> findByStartAssignmentDateLessThanEqualAndEndAssignmentDateGreaterThanEqual(
@@ -16,4 +15,5 @@ public interface CourseRepository extends CrudRepository<Course, Integer> {
   Collection<Course> findCoursesByTagsIn(Collection<Tag> tags);
 
   Collection<Course> findCoursesByNameContains(String name);
+
 }
