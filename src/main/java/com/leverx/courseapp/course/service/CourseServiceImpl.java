@@ -96,6 +96,8 @@ public class CourseServiceImpl implements CourseService {
                         courseDto.getDescription(),
                         courseDto.getStartAssignmentDate(),
                         courseDto.getEndAssignmentDate());
+        var tags = courseDto.getTags().stream().map(tag -> tagRepository.findTagsByNameContains(tag).stream().findFirst().orElseThrow(TagNotFoundException::new)).collect(Collectors.toList());
+        course.setTags(tags);
         repository.save(course);
         return courseDto;
     }

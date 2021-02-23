@@ -36,7 +36,7 @@ public class TagController {
 
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping
-    public Collection<TagDto> findTags(@RequestParam String name) {
+    public Collection<TagDto> findTags(@RequestParam(required = false) String name) {
         if (name != null) {
             return tagService.findTagsByName(name);
         }

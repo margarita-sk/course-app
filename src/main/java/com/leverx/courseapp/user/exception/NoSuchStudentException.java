@@ -1,8 +1,11 @@
 package com.leverx.courseapp.user.exception;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class NoSuchStudentException extends RuntimeException {
 
     public NoSuchStudentException(String name) {
-        super(String.format("Student with name %d not found", name));
+        super("Student with credentials: " + name + "not found");
     }
 }

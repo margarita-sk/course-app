@@ -12,12 +12,12 @@ public interface TaskService {
 
   Collection<TaskDtoShort> receiveAllTasksByCourse(int courseId);
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('admins')")
   void addTask(int courseId, TaskDto taskDto);
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('admins')")
   TaskDto editTask(int courseId, TaskDto taskDto, int taskId);
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('admins')")
   void deleteTask(int courseId, int taskId);
 }

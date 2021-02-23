@@ -21,12 +21,12 @@ public interface CourseService {
 
   Collection<CourseDtoShort> findCoursesByName(String name);
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('admins')")
   CourseDto addCourse(CourseDto courseDto);
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('admins')")
   void removeCourseById(int id);
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('admins')")
   CourseDto updateCourseById(int id, CourseDto courseDto);
 }

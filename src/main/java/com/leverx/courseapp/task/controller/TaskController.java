@@ -59,7 +59,7 @@ public class TaskController {
             @ApiResponse(code = 200, message = "Task was deleted successfully"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @DeleteMapping
+    @DeleteMapping("/{taskId}")
     public void deleteTask(@PathVariable int id, @PathVariable int taskId) {
         service.deleteTask(id, taskId);
     }
@@ -68,7 +68,7 @@ public class TaskController {
             @ApiResponse(code = 200, message = "Task was updated successfully"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @PutMapping
+    @PutMapping("/{taskId}")
     public TaskDto editTask(
             @PathVariable int id, @PathVariable int taskId, @RequestBody TaskDto taskDto) {
         return service.editTask(id, taskDto, taskId);

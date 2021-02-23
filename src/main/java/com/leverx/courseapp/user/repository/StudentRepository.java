@@ -3,7 +3,6 @@ package com.leverx.courseapp.user.repository;
 import com.leverx.courseapp.user.model.Student;
 import org.springframework.data.repository.CrudRepository;
 
-public interface StudentRepository extends CrudRepository<Student, Integer> {
+public interface StudentRepository extends CrudRepository<Student, String> {
 
-    Student findByNameContains(String studentName);
 }
