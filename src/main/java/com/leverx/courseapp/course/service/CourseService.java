@@ -2,7 +2,6 @@ package com.leverx.courseapp.course.service;
 
 import com.leverx.courseapp.course.dto.CourseDto;
 import com.leverx.courseapp.course.dto.CourseDtoShort;
-import com.leverx.courseapp.course.model.Course;
 import java.time.LocalDate;
 import java.util.Collection;
 import org.springframework.security.access.prepost.PreAuthorize;

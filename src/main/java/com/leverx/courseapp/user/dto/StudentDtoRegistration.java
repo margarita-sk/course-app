@@ -1,6 +1,5 @@
 package com.leverx.courseapp.user.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,14 +7,13 @@ import lombok.Data;
 @AllArgsConstructor
 public class StudentDtoRegistration {
 
-    private String firstName;
+  private String firstName;
 
-    private String lastName;
+  private String lastName;
 
-    private String email;
+  private String email;
 
-    private String faculty;
+  private String faculty;
 
-    private char[] password;
-
+  private char[] password;
 }

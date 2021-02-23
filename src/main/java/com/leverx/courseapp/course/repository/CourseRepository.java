@@ -5,7 +5,6 @@ import com.leverx.courseapp.tag.model.Tag;
 import java.time.LocalDate;
 import java.util.Collection;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 public interface CourseRepository extends CrudRepository<Course, Integer> {
 
@@ -15,5 +14,4 @@ public interface CourseRepository extends CrudRepository<Course, Integer> {
   Collection<Course> findCoursesByTagsIn(Collection<Tag> tags);
 
   Collection<Course> findCoursesByNameContains(String name);
-
 }

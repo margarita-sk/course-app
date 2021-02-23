@@ -14,41 +14,37 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class OktaSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${okta.client.org-url}")
-    private String oktaDomain;
+  @Value("${okta.client.org-url}")
+  private String oktaDomain;
 
-    @Bean
-    AuthenticationClient authenticationClient() {
-        var client = AuthenticationClients.builder()
-                .setOrgUrl(oktaDomain)
-                .build();
-        return client;
-    }
+  @Bean
+  AuthenticationClient authenticationClient() {
+    var client = AuthenticationClients.builder().setOrgUrl(oktaDomain).build();
+    return client;
+  }
 
-//    @Component("userSecurity")
-//    public class UserSecurity {
-//        public boolean hasUserEmail(JwtAuthenticationToken authentication, String email) {
-//            return authentication.getName().equals(email);
-//        }
-//    }
+  //    @Component("userSecurity")
+  //    public class UserSecurity {
+  //        public boolean hasUserEmail(JwtAuthenticationToken authentication, String email) {
+  //            return authentication.getName().equals(email);
+  //        }
+  //    }
 
-
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/courses/**", "/tags/**", "/tasks/**")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/students")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and().logout().logoutSuccessUrl("/")
-                .and().oauth2Client()
-                .and().oauth2Login();
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests()
+        .antMatchers("/courses/**", "/tags/**", "/tasks/**")
+        .permitAll()
+        .antMatchers(HttpMethod.POST, "/students")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .logout()
+        .logoutSuccessUrl("/")
+        .and()
+        .oauth2Client()
+        .and()
+        .oauth2Login();
+  }
 }
-
-
-

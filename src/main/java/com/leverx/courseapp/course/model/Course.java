@@ -52,5 +52,4 @@ public class Course {
       joinColumns = @JoinColumn(name = "COURSE_ID"),
       inverseJoinColumns = @JoinColumn(name = "STUDENT_ID"))
   private Collection<Student> students;
-
 }

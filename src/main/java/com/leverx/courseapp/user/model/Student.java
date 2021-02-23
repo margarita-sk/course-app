@@ -3,7 +3,6 @@ package com.leverx.courseapp.user.model;
 import com.leverx.courseapp.course.model.Course;
 import java.util.Collection;
 import javax.persistence.*;
-
 import lombok.*;
 
 @Entity
@@ -25,5 +24,4 @@ public class Student {
 
   @ManyToMany(mappedBy = "students")
   private Collection<Course> courses;
-
 }

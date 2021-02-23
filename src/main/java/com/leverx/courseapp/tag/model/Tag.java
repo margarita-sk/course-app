@@ -1,8 +1,5 @@
 package com.leverx.courseapp.tag.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.leverx.courseapp.course.model.Course;
-import java.util.Collection;
 import javax.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +16,4 @@ public class Tag {
 
   @Column(name = "NAME")
   private String name;
-
 }

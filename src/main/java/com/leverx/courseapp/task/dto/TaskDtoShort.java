@@ -8,5 +8,4 @@ import lombok.Data;
 public class TaskDtoShort {
 
   private String name;
-
 }

@@ -2,7 +2,6 @@ package com.leverx.courseapp.task.service;
 
 import com.leverx.courseapp.task.dto.TaskDto;
 import com.leverx.courseapp.task.dto.TaskDtoShort;
-import com.leverx.courseapp.task.model.Task;
 import java.util.Collection;
 import org.springframework.security.access.prepost.PreAuthorize;
 
