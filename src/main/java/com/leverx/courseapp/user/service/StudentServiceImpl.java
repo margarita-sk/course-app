@@ -12,6 +12,8 @@ import com.leverx.courseapp.user.repository.StudentRepository;
 import com.okta.sdk.client.Client;
 import com.okta.sdk.resource.user.User;
 import com.okta.sdk.resource.user.UserBuilder;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class StudentServiceImpl implements StudentService {
 
   private final StudentRepository studentRepository;
@@ -78,10 +79,10 @@ public class StudentServiceImpl implements StudentService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Collection<CourseDtoShort> receiveCoursesByStudent(String email) {
     var student = studentRepository.findById(email).orElseThrow((NoSuchStudentException::new));
     var courses = student.getCourses();
-    courses.forEach(course -> System.out.println(course.getName()));
     var coursesDto =
         courses.stream()
             .map(course -> new CourseDtoShort(course.getName(), course.getDescription()))
@@ -122,11 +123,10 @@ public class StudentServiceImpl implements StudentService {
     var studentsCourses = student.getCourses();
     studentsCourses.add(newCourse);
     student.setCourses(studentsCourses);
-    studentRepository.save(student);
-
-    // TODO here we have a problem: for some reason transaction is not committed
-    var st = studentRepository.findById(email).orElseThrow(NoSuchStudentException::new);
-    st.getCourses().forEach(course -> System.out.println(course.getName()));
+    student = studentRepository.save(student);
+    newCourse.setStudents(new ArrayList<>(newCourse.getStudents()));
+    newCourse.getStudents().add(student);
+    courseRepository.save(newCourse);
   }
 
   @Override

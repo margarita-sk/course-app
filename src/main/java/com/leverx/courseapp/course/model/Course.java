@@ -14,6 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "COURSES")
+@ToString(exclude = "students")
 public class Course {
 
   @Id

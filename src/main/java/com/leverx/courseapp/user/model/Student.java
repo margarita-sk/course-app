@@ -22,6 +22,6 @@ public class Student {
   @Column(name = "FACULTY")
   private String faculty;
 
-  @ManyToMany(mappedBy = "students")
+  @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
   private Collection<Course> courses;
 }
