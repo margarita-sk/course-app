@@ -1,11 +1,13 @@
 package com.leverx.courseapp.security;
 
-import com.okta.authn.sdk.client.AuthenticationClient;
-import com.okta.authn.sdk.client.AuthenticationClients;
+
+import com.okta.sdk.authc.credentials.TokenClientCredentials;
+import com.okta.sdk.client.Client;
+import com.okta.sdk.client.Clients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,32 +17,24 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class OktaSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${okta.client.org-url}")
+    @Value("${okta.domain}")
     private String oktaDomain;
 
+    @Value("${okta.client.token}")
+    private String clientToken;
+
     @Bean
-    AuthenticationClient authenticationClient() {
-        var client = AuthenticationClients.builder().setOrgUrl(oktaDomain).build();
+    Client client() {
+        var client = Clients.builder()
+                .setOrgUrl(oktaDomain)
+                .setClientCredentials(new TokenClientCredentials(clientToken))
+                .build();
         return client;
     }
 
-    //    @Component("userSecurity")
-    //    public class UserSecurity {
-    //        public boolean hasUserEmail(JwtAuthenticationToken authentication, String email) {
-    //            return authentication.getName().equals(email);
-    //        }
-    //    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/courses/**", "/tags/**", "/tasks/**", "/h2/**")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/students")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+        http
                 .logout()
                 .logoutSuccessUrl("/")
                 .and()
@@ -50,6 +44,7 @@ public class OktaSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    @Profile("local")
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v2/api-docs",
                 "/configuration/ui",

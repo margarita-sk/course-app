@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertion-04
+      author: marharyta
+      changes:
+        - insert:
+            tableName: COURSE_TAG
+            columns:
+              - column:
+                  name: COURSE_ID
+                  value: 1
+              - column:
+                  name: TAG_ID
+                  value: 1
+        - insert:
+            tableName: COURSE_TAG
+            columns:
+              - column:
+                  name: COURSE_ID
+                  value: 2
+              - column:
+                  name: TAG_ID
+                  value: 1

@@ -1,8 +1,11 @@
 package com.leverx.courseapp.course.exception;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class NoSuchCourseException extends RuntimeException {
 
   public NoSuchCourseException(int id) {
-    super(String.format("Course with Id %d not found", id));
+    super("Course with Id " + id + "  not found");
   }
 }

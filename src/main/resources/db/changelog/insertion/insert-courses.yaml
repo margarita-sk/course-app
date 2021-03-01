@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertion-01
+      author: marharyta
+      changes:
+        - insert:
+            tableName: COURSES
+            columns:
+              - column:
+                  name: NAME
+                  value: "Baking cookies"
+              - column:
+                  name: DESCRIPTION
+                  value: "You will learn everything about cookies "
+              - column:
+                  name: START_ASSIGNMENT_DATE
+                  value: "2021-02-02"
+              - column:
+                  name: END_ASSIGNMENT_DATE
+                  value: "2021-03-13"
+        - insert:
+            tableName: COURSES
+            columns:
+              - column:
+                  name: NAME
+                  value: "DBMS"
+              - column:
+                  name: DESCRIPTION
+                  value: "You will learn everything about DBMS "
+              - column:
+                  name: START_ASSIGNMENT_DATE
+                  value: "2021-03-02"
+              - column:
+                  name: END_ASSIGNMENT_DATE
+                  value: "2021-04-11"

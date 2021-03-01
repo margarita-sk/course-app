@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertion-11
+      author: marharyta
+      changes:
+        - insert:
+            tableName: STUDENT_COURSE_ASSIGNMENT
+            columns:
+              - column:
+                  name: STUDENT_ID
+                  value: student@student.com
+              - column:
+                  name: COURSE_ID
+                  value: 1

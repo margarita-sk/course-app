@@ -4,7 +4,9 @@ import com.leverx.courseapp.course.dto.CourseDtoShort;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.repository.CourseRepository;
+import com.leverx.courseapp.logging.annotations.DbChangeable;
 import com.leverx.courseapp.user.dto.StudentDtoRegistration;
+import com.leverx.courseapp.user.dto.StudentDtoShort;
 import com.leverx.courseapp.user.dto.StudentOktaDto;
 import com.leverx.courseapp.user.exception.NoSuchStudentException;
 import com.leverx.courseapp.user.model.Student;
@@ -29,7 +31,7 @@ public class StudentServiceImpl implements StudentService {
   private final CourseRepository courseRepository;
   private final Client client;
 
-  @Value("${okta.group.id}")
+  @Value("${okta.group.users.id}")
   private String groupId;
 
   public StudentServiceImpl(
@@ -79,31 +81,18 @@ public class StudentServiceImpl implements StudentService {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public Collection<CourseDtoShort> receiveCoursesByStudent(String email) {
     var student = studentRepository.findById(email).orElseThrow((NoSuchStudentException::new));
     var courses = student.getCourses();
     var coursesDto =
         courses.stream()
-            .map(course -> new CourseDtoShort(course.getName(), course.getDescription()))
+            .map(course -> new CourseDtoShort(course.getId(), course.getName(), course.getDescription()))
             .collect(Collectors.toList());
     return coursesDto;
   }
 
   @Override
-  public User addStudent(StudentDtoRegistration studentDto) {
-    studentRepository.save(new Student(studentDto.getEmail(), studentDto.getFaculty()));
-    return UserBuilder.instance()
-        .setFirstName(studentDto.getFirstName())
-        .setLastName(studentDto.getLastName())
-        .setEmail(studentDto.getEmail())
-        .setLogin(studentDto.getEmail())
-        .setGroups(groupId)
-        .setPassword(studentDto.getPassword())
-        .buildAndCreate(client);
-  }
-
-  @Override
+  @DbChangeable
   public void deleteStudent(String email) {
     var student = studentRepository.findById(email).orElseThrow(NoSuchStudentException::new);
     studentRepository.delete(student);
@@ -114,6 +103,13 @@ public class StudentServiceImpl implements StudentService {
             .orElseThrow(NoSuchStudentException::new);
     user.deactivate();
     user.delete();
+  }
+
+  @Override
+  public StudentOktaDto registerStudentInDb(StudentDtoShort studentDto) {
+    studentRepository.save(new Student(studentDto.getEmail(), studentDto.getFaculty()));
+    var student = findStudentByEmail(studentDto.getEmail());
+    return student;
   }
 
   @Override

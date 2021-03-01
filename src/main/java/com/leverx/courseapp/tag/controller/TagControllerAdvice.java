@@ -14,12 +14,12 @@ public class TagControllerAdvice {
 
   @ExceptionHandler(TagNotFoundException.class)
   public ResponseEntity<Object> handleTagNotFoundException(TagNotFoundException ex) {
-    var body = Map.of("timestamp", LocalDateTime.now(), "message", ex);
+    var body = Map.of("timestamp", LocalDateTime.now(), "message", ex.getMessage());
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-    return new ResponseEntity<>(Map.of("message", ex), HttpStatus.UNAUTHORIZED);
+    return new ResponseEntity<>(Map.of("message", ex.getMessage()), HttpStatus.UNAUTHORIZED);
   }
 }

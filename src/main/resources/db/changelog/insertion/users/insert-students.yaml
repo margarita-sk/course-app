@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertion-06
+      author: marharyta
+      changes:
+        - insert:
+            tableName: STUDENTS
+            columns:
+              - column:
+                  name: EMAIL
+                  value: student@student.com
+              - column:
+                  name: FACULTY
+                  value: "general medicine"

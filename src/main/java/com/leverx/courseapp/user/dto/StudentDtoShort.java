@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class StudentDtoShort {
 
-  private String name;
+  private String email;
 
   private String faculty;
 }

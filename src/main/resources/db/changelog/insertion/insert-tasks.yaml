@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertion-03
+      author: marharyta
+      changes:
+        - insert:
+            tableName: TASKS
+            columns:
+              - column:
+                  name: NAME
+                  value: "Learn how to choose right products"
+              - column:
+                  name: DESCRIPTION
+                  value: "First step is..., second ..."
+              - column:
+                  name: COURSE_ID
+                  value: 1
+        - insert:
+            tableName: TASKS
+            columns:
+              - column:
+                  name: NAME
+                  value: "Bake biscuits"
+              - column:
+                  name: DESCRIPTION
+                  value: "First step is..., second ..."
+              - column:
+                  name: COURSE_ID
+                  value: 1

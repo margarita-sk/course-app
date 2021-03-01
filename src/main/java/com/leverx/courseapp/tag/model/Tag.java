@@ -12,7 +12,7 @@ public class Tag {
 
   @Id
   @Column(name = "ID")
-  private int id;
+  private Long id;
 
   @Column(name = "NAME")
   private String name;

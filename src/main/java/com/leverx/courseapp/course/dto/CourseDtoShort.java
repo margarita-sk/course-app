@@ -1,12 +1,16 @@
 package com.leverx.courseapp.course.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 public class CourseDtoShort {
 
-  @NonNull private String name;
+  private int id;
 
-  @NonNull private String description;
+  private String name;
+
+  private String description;
 }
