@@ -10,8 +10,14 @@ databaseChangeLog:
                   name: EMAIL
                   type: varchar(100)
                   constraints:
-                    - primaryKey: true
-                    - nullable: false
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: FIRST_NAME
+                  type: varchar(100)
+              - column:
+                  name: LAST_NAME
+                  type: varchar(100)
               - column:
                   name: FACULTY
                   type: varchar(100)

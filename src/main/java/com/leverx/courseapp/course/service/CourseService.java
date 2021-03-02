@@ -2,31 +2,33 @@ package com.leverx.courseapp.course.service;
 
 import com.leverx.courseapp.course.dto.CourseDto;
 import com.leverx.courseapp.course.dto.CourseDtoShort;
+
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface CourseService {
 
-  CourseDto findCourseById(int id);
+    CourseDto findCourseById(int id);
 
-  Collection<CourseDtoShort> getAll();
+    CourseDto addCourse(CourseDto courseDto);
 
-  Collection<CourseDtoShort> findCourses(String name, LocalDate date, Collection<String> tagsNames);
+    void removeCourseById(int id);
 
-  Collection<CourseDtoShort> findCoursesByDate(LocalDate date);
+    CourseDto updateCourseById(int id, CourseDto courseDto);
 
-  Collection<CourseDtoShort> findCoursesByTags(Collection<String> tagsNames);
+    Collection<CourseDtoShort> findByParams(String courseName, LocalDate date, String tag, Integer pageNo, Integer pageSize, String sortBy);
 
-  Collection<CourseDtoShort> findCoursesByName(String name);
+    List<CourseDtoShort> findAllCourses(Pageable paging);
 
-  @PreAuthorize("hasAuthority('admins')")
-  CourseDto addCourse(CourseDto courseDto);
+    Collection<CourseDtoShort> findCoursesByDate(LocalDate date, Pageable paging);
 
-  @PreAuthorize("hasAuthority('admins')")
-  void removeCourseById(int id);
+    Collection<CourseDtoShort> findCoursesByTags(String tagName, Pageable paging);
 
-  @PreAuthorize("hasAuthority('admins')")
-  CourseDto updateCourseById(int id, CourseDto courseDto);
+    Collection<CourseDtoShort> findCoursesByName(String name, Pageable paging);
 }

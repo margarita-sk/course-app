@@ -1,13 +1,17 @@
 package com.leverx.courseapp.tag.service;
 
 import com.leverx.courseapp.tag.dto.TagDto;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Collection;
 
 public interface TagService {
 
-  Collection<TagDto> findAll();
+    TagDto findTagById(int id);
 
-  TagDto findTagById(int id);
+    Collection<TagDto> findByParams(Integer pageNo, Integer pageSize, String sortBy, String name);
 
-  Collection<TagDto> findTagsByName(String name);
+    Collection<TagDto> findAll(Pageable paging);
+
+    Collection<TagDto> findTagsByName(String name, Pageable paging);
 }

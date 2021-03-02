@@ -2,16 +2,19 @@ package com.leverx.courseapp.course.repository;
 
 import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.tag.model.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
 import java.time.LocalDate;
 import java.util.Collection;
-import org.springframework.data.repository.CrudRepository;
 
-public interface CourseRepository extends CrudRepository<Course, Integer> {
 
-  Collection<Course> findByStartAssignmentDateLessThanEqualAndEndAssignmentDateGreaterThanEqual(
-      LocalDate date1, LocalDate date2);
+public interface CourseRepository extends PagingAndSortingRepository<Course, Integer> {
 
-  Collection<Course> findCoursesByTagsIn(Collection<Tag> tags);
+    Page<Course> findCoursesByStartAssignmentDateLessThanEqualAndEndAssignmentDateGreaterThanEqual(LocalDate date1, LocalDate date2, Pageable pageable);
 
-  Collection<Course> findCoursesByNameContains(String name);
+    Page<Course> findCoursesByTagsIn(Collection<Tag> tags, Pageable pageable);
+
+    Page<Course> findCoursesByNameContains(String name, Pageable pageable);
 }

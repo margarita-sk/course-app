@@ -10,5 +10,11 @@ databaseChangeLog:
                   name: EMAIL
                   value: student@student.com
               - column:
+                  name: FIRST_NAME
+                  value: "Student"
+              - column:
+                  name: LAST_NAME
+                  value: "Student"
+              - column:
                   name: FACULTY
                   value: "general medicine"

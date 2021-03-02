@@ -2,7 +2,9 @@ package com.leverx.courseapp.course.controller;
 
 import com.leverx.courseapp.course.dto.CourseDto;
 import com.leverx.courseapp.course.dto.CourseDtoShort;
+import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.service.CourseService;
+import com.leverx.courseapp.course.service.CourseServicePagination;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -11,10 +13,13 @@ import io.swagger.annotations.ApiResponses;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -40,12 +45,20 @@ public class CourseController {
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @GetMapping
-    public Collection<CourseDtoShort> receiveCourses(
-            @RequestParam(required = false) String courseName,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-            @RequestParam(required = false) List<String> tags) {
-        var courses = service.findCourses(courseName, date, tags);
-        return courses;
+    public ResponseEntity<Collection<CourseDtoShort>> receiveCourses(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false)
+                    String courseName,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                    LocalDate date,
+            @RequestParam(required = false)
+                    String tag) {
+        var courses = service.findByParams(courseName, date, tag, pageNo, pageSize, sortBy);
+        var response = new ResponseEntity<Collection<CourseDtoShort>>(courses, new HttpHeaders(), HttpStatus.OK);
+        return response;
     }
 
     @ApiResponses(
