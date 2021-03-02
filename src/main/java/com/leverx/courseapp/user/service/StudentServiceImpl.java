@@ -3,7 +3,7 @@ package com.leverx.courseapp.user.service;
 import com.leverx.courseapp.course.dto.CourseDtoShort;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
-import com.leverx.courseapp.course.repository.CoursePaginationRepository;
+import com.leverx.courseapp.course.repository.CourseRepository;
 import com.leverx.courseapp.logging.annotations.DbChangeable;
 import com.leverx.courseapp.user.dto.StudentDto;
 import com.leverx.courseapp.user.exception.NoSuchStudentException;
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -24,14 +25,14 @@ import org.springframework.stereotype.Service;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
-    private final CoursePaginationRepository courseRepository;
+    private final CourseRepository courseRepository;
     private final Client client;
 
     @Value("${okta.group.users.id}")
     private String groupId;
 
     public StudentServiceImpl(
-            StudentRepository studentRepository, CoursePaginationRepository courseRepository, Client client) {
+            StudentRepository studentRepository, CourseRepository courseRepository, Client client) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
         this.client = client;

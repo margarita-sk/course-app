@@ -7,9 +7,6 @@ databaseChangeLog:
             tableName: STUDENTS
             columns:
               - column:
-                  name: ID
-                  value: 1
-              - column:
                   name: EMAIL
                   value: student@student.com
               - column:

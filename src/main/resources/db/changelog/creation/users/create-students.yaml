@@ -7,14 +7,11 @@ databaseChangeLog:
             tableName: STUDENTS
             columns:
               - column:
-                  name: ID
-                  type: int
-                  constraints:
-                    - primaryKey: true
-                    - autoIncrement: true
-              - column:
                   name: EMAIL
                   type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
               - column:
                   name: FIRST_NAME
                   type: varchar(100)

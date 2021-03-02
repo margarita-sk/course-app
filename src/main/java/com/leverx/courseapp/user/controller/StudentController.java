@@ -37,7 +37,7 @@ public class StudentController {
     public ResponseEntity<Collection<StudentDto>> receiveStudents(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+            @RequestParam(defaultValue = "email") String sortBy) {
         var students = studentService.receiveAll(pageNo, pageSize, sortBy);
         var response = new ResponseEntity<Collection<StudentDto>>(students, new HttpHeaders(), HttpStatus.OK);
         return response;

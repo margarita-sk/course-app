@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 
-public interface CoursePaginationRepository extends PagingAndSortingRepository<Course, Integer> {
+public interface CourseRepository extends PagingAndSortingRepository<Course, Integer> {
 
     Page<Course> findCoursesByStartAssignmentDateLessThanEqualAndEndAssignmentDateGreaterThanEqual(LocalDate date1, LocalDate date2, Pageable pageable);
 

@@ -5,7 +5,7 @@ import com.leverx.courseapp.course.dto.CourseDtoShort;
 import com.leverx.courseapp.course.exception.CannotDeleteCourseException;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
-import com.leverx.courseapp.course.repository.CoursePaginationRepository;
+import com.leverx.courseapp.course.repository.CourseRepository;
 import com.leverx.courseapp.logging.annotations.DbChangeable;
 import com.leverx.courseapp.tag.exception.TagNotFoundException;
 import com.leverx.courseapp.tag.repository.TagRepository;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CourseServicePagination implements CourseService {
 
-    private final CoursePaginationRepository courseRepository;
+    private final CourseRepository courseRepository;
     private final TagRepository tagRepository;
 
     @Override

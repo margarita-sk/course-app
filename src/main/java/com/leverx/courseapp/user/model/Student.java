@@ -16,10 +16,6 @@ import org.hibernate.id.IncrementGenerator;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private int id;
-
     @Column(name = "EMAIL", unique = true)
     private String email;
 
