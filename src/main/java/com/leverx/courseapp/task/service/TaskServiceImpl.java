@@ -2,7 +2,7 @@ package com.leverx.courseapp.task.service;
 
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
-import com.leverx.courseapp.course.repository.CourseRepository;
+import com.leverx.courseapp.course.repository.CoursePaginationRepository;
 import com.leverx.courseapp.logging.annotations.DbChangeable;
 import com.leverx.courseapp.tag.exception.TagNotFoundException;
 import com.leverx.courseapp.task.dto.TaskDto;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TaskServiceImpl implements TaskService {
 
-  private final CourseRepository courseRepository;
+  private final CoursePaginationRepository courseRepository;
   private final TaskRepository taskRepository;
 
   @Override
