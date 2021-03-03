@@ -1,11 +1,5 @@
 package com.leverx.courseapp.security;
 
-
-import com.okta.sdk.authc.credentials.TokenClientCredentials;
-import com.okta.sdk.client.AuthorizationMode;
-import com.okta.sdk.client.Client;
-import com.okta.sdk.client.Clients;
-import com.okta.sdk.resource.user.User;
 import com.okta.sdk.resource.user.UserBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,32 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//
-//    @Value("${okta.domain}")
-//    private String oktaDomain;
-//
-//    @Value("${okta.client.token}")
-//    private String clientToken;
-//
-//    @Value("${okta.oauth2.client-id}")
-//    private String clientId;
-//
-//    @Bean
-//    Client client() {
-//        var client = Clients.builder()
-//                .setOrgUrl(oktaDomain)  // e.g. https://dev-123456.okta.com
-//                .setAuthorizationMode(AuthorizationMode.SSWS)
-//                .setClientCredentials(new TokenClientCredentials(clientToken))
-//                .setClientId(clientId)
-//                .build();
-//        return client;
-//    }
 
     @Value("${okta.group.users.id}")
     private String groupId;

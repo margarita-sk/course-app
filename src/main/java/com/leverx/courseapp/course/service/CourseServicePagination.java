@@ -6,7 +6,7 @@ import com.leverx.courseapp.course.exception.CannotDeleteCourseException;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.repository.CourseRepository;
-import com.leverx.courseapp.logging.annotations.DbChangeable;
+import com.leverx.courseapp.logging.annotations.Changeable;
 import com.leverx.courseapp.tag.exception.TagNotFoundException;
 import com.leverx.courseapp.tag.repository.TagRepository;
 import lombok.AllArgsConstructor;
@@ -44,7 +44,7 @@ public class CourseServicePagination implements CourseService {
     }
 
     @Override
-    @DbChangeable
+    @Changeable
     public CourseDto addCourse(CourseDto courseDto) {
         var course =
                 new Course(
@@ -66,7 +66,7 @@ public class CourseServicePagination implements CourseService {
     }
 
     @Override
-    @DbChangeable
+    @Changeable
     public void removeCourseById(int id) {
         var course =
                 courseRepository
@@ -76,7 +76,7 @@ public class CourseServicePagination implements CourseService {
     }
 
     @Override
-    @DbChangeable
+    @Changeable
     public CourseDto updateCourseById(int id, CourseDto courseDto) {
         var course =
                 courseRepository

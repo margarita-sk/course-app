@@ -1,4 +1,4 @@
-package com.leverx.courseapp.task.controller;
+package com.leverx.courseapp.task.error;
 
 import com.leverx.courseapp.task.exception.NoSuchTaskException;
 import java.time.LocalDateTime;
@@ -16,10 +16,5 @@ public class TaskControllerAdvice {
   public ResponseEntity<Object> handleNoSuchTaskException(NoSuchTaskException ex) {
     var body = Map.of("timestamp", LocalDateTime.now(), "message", ex.getMessage());
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-  }
-
-  @ExceptionHandler(AccessDeniedException.class)
-  public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-    return new ResponseEntity<>(Map.of("message", ex.getMessage()), HttpStatus.UNAUTHORIZED);
   }
 }

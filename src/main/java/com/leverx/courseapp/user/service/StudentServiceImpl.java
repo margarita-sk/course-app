@@ -4,7 +4,7 @@ import com.leverx.courseapp.course.dto.CourseDtoShort;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.repository.CourseRepository;
-import com.leverx.courseapp.logging.annotations.DbChangeable;
+import com.leverx.courseapp.logging.annotations.Changeable;
 import com.leverx.courseapp.user.dto.StudentDto;
 import com.leverx.courseapp.user.dto.StudentDtoRegistration;
 import com.leverx.courseapp.user.exception.NoSuchStudentException;
@@ -65,7 +65,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @DbChangeable
+    @Changeable
     public void deleteStudent(String email) {
         var student = studentRepository.findStudentByEmail(email);
         var user =
@@ -79,6 +79,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Changeable
     public Student addStudent(StudentDtoRegistration studentDto) {
         var student = new Student(studentDto.getEmail(), studentDto.getFirstName(), studentDto.getLastName(), studentDto.getFaculty());
         var user = userBuilder

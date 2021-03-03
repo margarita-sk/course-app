@@ -3,8 +3,7 @@ package com.leverx.courseapp.task.service;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.repository.CourseRepository;
-import com.leverx.courseapp.logging.annotations.DbChangeable;
-import com.leverx.courseapp.tag.exception.TagNotFoundException;
+import com.leverx.courseapp.logging.annotations.Changeable;
 import com.leverx.courseapp.task.dto.TaskDto;
 import com.leverx.courseapp.task.dto.TaskDtoShort;
 import com.leverx.courseapp.task.exception.NoSuchTaskException;
@@ -46,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
-  @DbChangeable
+  @Changeable
   public void addTask(int courseId, TaskDto taskDto) {
     var task = new Task(taskDto.getName(), taskDto.getDescription(), courseId);
     taskRepository.save(task);
@@ -60,7 +59,7 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
-  @DbChangeable
+  @Changeable
   public TaskDto editTask(int courseId, TaskDto taskDto, int taskId) {
     var changedTask = new Task(taskId, taskDto.getName(), taskDto.getDescription(), courseId);
     taskRepository.save(changedTask);
@@ -82,7 +81,7 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
-  @DbChangeable
+  @Changeable
   public void deleteTask(int courseId, int taskId) {
     var task = taskRepository.findById(taskId).orElseThrow(NoSuchTaskException::new);
     taskRepository.delete(task);
