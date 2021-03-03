@@ -1,5 +1,10 @@
 package com.leverx.courseapp.security;
 
+import com.okta.sdk.authc.credentials.TokenClientCredentials;
+import com.okta.sdk.client.AuthorizationMode;
+import com.okta.sdk.client.Client;
+import com.okta.sdk.client.ClientBuilder;
+import com.okta.sdk.client.Clients;
 import com.okta.sdk.resource.user.UserBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +21,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${okta.group.users.id}")
     private String groupId;
+
+    @Value("${okta.oauth2.client-id}")
+    private String clientId;
+
+    @Value("${okta.client.org-url}")
+    private String orgUrl;
+
+    @Value("${okta.client.token}")
+    private String clientToken;
+
+    @Bean
+    Client client() {
+        var client = Clients.builder()
+                .setAuthorizationMode(AuthorizationMode.SSWS)
+                .setClientId(clientId)
+                .setOrgUrl(orgUrl)
+                .setClientCredentials(new TokenClientCredentials(clientToken))
+                .build();
+        return client;
+    }
 
     @Bean
     UserBuilder userBuilder() {
