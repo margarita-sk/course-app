@@ -1,4 +1,4 @@
-package com.leverx.courseapp.tag.controller;
+package com.leverx.courseapp.tag.error;
 
 import com.leverx.courseapp.tag.exception.TagNotFoundException;
 import java.time.LocalDateTime;
@@ -18,8 +18,4 @@ public class TagControllerAdvice {
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler(AccessDeniedException.class)
-  public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-    return new ResponseEntity<>(Map.of("message", ex.getMessage()), HttpStatus.UNAUTHORIZED);
-  }
 }

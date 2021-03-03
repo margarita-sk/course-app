@@ -2,7 +2,9 @@ package com.leverx.courseapp.user.controller;
 
 import com.leverx.courseapp.course.dto.CourseDtoShort;
 import com.leverx.courseapp.user.dto.StudentDto;
+import com.leverx.courseapp.user.dto.StudentDtoRegistration;
 import com.leverx.courseapp.user.dto.StudentDtoShort;
+import com.leverx.courseapp.user.model.Student;
 import com.leverx.courseapp.user.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
@@ -50,14 +52,12 @@ public class StudentController {
         return studentService.findStudentByEmail(email);
     }
 
-    @PreAuthorize("hasAuthority('admins') or #studentDto.email.equals(authentication.name)")
-    @PutMapping
-    public StudentDto registrateStudent(@RequestBody StudentDto studentDto) {
-        var user = studentService.registerStudentInDb(studentDto);
-        return user;
+    @PostMapping
+    public Student addStudent(@RequestBody StudentDtoRegistration studentDto) {
+        var student = studentService.addStudent(studentDto);
+        return student;
     }
 
-    @PreAuthorize("hasAuthority('admins') or #email.equals(authentication.name)")
     @DeleteMapping
     public void deleteStudent(@RequestParam String email) {
         studentService.deleteStudent(email);

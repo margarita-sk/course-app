@@ -1,4 +1,4 @@
-package com.leverx.courseapp.user.controller;
+package com.leverx.courseapp.user.error;
 
 import com.leverx.courseapp.user.exception.NoSuchStudentException;
 
@@ -24,8 +24,8 @@ public class StudentControllerAdvice {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-        return new ResponseEntity<>(
-                Map.of("message", ex.getLocalizedMessage()), HttpStatus.UNAUTHORIZED);
+        var body = Map.of("message", ex.getLocalizedMessage(), "full message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(StudentRegistrationException.class)

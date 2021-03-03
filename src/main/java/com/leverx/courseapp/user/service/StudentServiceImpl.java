@@ -6,6 +6,7 @@ import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.repository.CourseRepository;
 import com.leverx.courseapp.logging.annotations.DbChangeable;
 import com.leverx.courseapp.user.dto.StudentDto;
+import com.leverx.courseapp.user.dto.StudentDtoRegistration;
 import com.leverx.courseapp.user.exception.NoSuchStudentException;
 import com.leverx.courseapp.user.model.Student;
 import com.leverx.courseapp.user.repository.StudentRepository;
@@ -15,8 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import com.okta.sdk.resource.user.UserBuilder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -27,15 +27,15 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
     private final Client client;
+    private final UserBuilder userBuilder;
 
-    @Value("${okta.group.users.id}")
-    private String groupId;
 
     public StudentServiceImpl(
-            StudentRepository studentRepository, CourseRepository courseRepository, Client client) {
+            StudentRepository studentRepository, CourseRepository courseRepository, Client client, UserBuilder userBuilder) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
         this.client = client;
+        this.userBuilder = userBuilder;
     }
 
     @Override
@@ -68,7 +68,6 @@ public class StudentServiceImpl implements StudentService {
     @DbChangeable
     public void deleteStudent(String email) {
         var student = studentRepository.findStudentByEmail(email);
-        studentRepository.delete(student);
         var user =
                 client.listUsers().stream()
                         .filter(searchedUser -> searchedUser.getProfile().getEmail().equals(email))
@@ -76,12 +75,19 @@ public class StudentServiceImpl implements StudentService {
                         .orElseThrow(NoSuchStudentException::new);
         user.deactivate();
         user.delete();
+        studentRepository.delete(student);
     }
 
     @Override
-    public StudentDto registerStudentInDb(StudentDto studentDto) {
-        studentRepository.save(new Student(studentDto.getEmail(), studentDto.getFirstName(), studentDto.getLastName(), studentDto.getFaculty()));
-        var student = findStudentByEmail(studentDto.getEmail());
+    public Student addStudent(StudentDtoRegistration studentDto) {
+        var student = new Student(studentDto.getEmail(), studentDto.getFirstName(), studentDto.getLastName(), studentDto.getFaculty());
+        var user = userBuilder
+                .setEmail(student.getEmail())
+                .setFirstName(student.getFirstName())
+                .setLastName(student.getLastName())
+                .setPassword(studentDto.getPassword())
+                .buildAndCreate(client);
+        studentRepository.save(student);
         return student;
     }
 

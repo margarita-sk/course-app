@@ -2,7 +2,9 @@ package com.leverx.courseapp.user.service;
 
 import com.leverx.courseapp.course.dto.CourseDtoShort;
 import com.leverx.courseapp.user.dto.StudentDto;
+import com.leverx.courseapp.user.dto.StudentDtoRegistration;
 import com.leverx.courseapp.user.dto.StudentDtoShort;
+import com.leverx.courseapp.user.model.Student;
 
 import java.util.Collection;
 
@@ -14,7 +16,7 @@ public interface StudentService {
 
     void deleteStudent(String email);
 
-    StudentDto registerStudentInDb(StudentDto studentDto);
+    Student addStudent(StudentDtoRegistration studentDto);
 
     // assignment to courses
 
