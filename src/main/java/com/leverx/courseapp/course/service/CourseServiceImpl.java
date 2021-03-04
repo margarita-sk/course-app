@@ -1,7 +1,7 @@
 package com.leverx.courseapp.course.service;
 
 import com.leverx.courseapp.course.dto.CourseDto;
-import com.leverx.courseapp.course.dto.CourseDtoShort;
+import com.leverx.courseapp.course.dto.CourseDtoResponse;
 import com.leverx.courseapp.course.exception.CannotDeleteCourseException;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
@@ -21,31 +21,23 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class CourseServicePagination implements CourseService {
+public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final TagRepository tagRepository;
 
     @Override
-    public CourseDto findCourseById(int id) {
+    public Course findCourseById(int id) {
         var course =
                 courseRepository
                         .findById(id)
                         .orElseThrow(NoSuchCourseException::new);
-        var tags = course.getTags().stream().map(tag -> tag.getName()).collect(Collectors.toList());
-        var courseDto =
-                new CourseDto(
-                        course.getName(),
-                        course.getDescription(),
-                        course.getStartAssignmentDate(),
-                        course.getEndAssignmentDate(),
-                        tags);
-        return courseDto;
+        return course;
     }
 
     @Override
     @Changeable
-    public CourseDto addCourse(CourseDto courseDto) {
+    public Course addCourse(CourseDto courseDto) {
         var course =
                 new Course(
                         courseDto.getName(),
@@ -62,7 +54,7 @@ public class CourseServicePagination implements CourseService {
                         .collect(Collectors.toList());
         course.setTags(tags);
         courseRepository.save(course);
-        return courseDto;
+        return course;
     }
 
     @Override
@@ -77,7 +69,7 @@ public class CourseServicePagination implements CourseService {
 
     @Override
     @Changeable
-    public CourseDto updateCourseById(int id, CourseDto courseDto) {
+    public Course updateCourseById(int id, CourseDto courseDto) {
         var course =
                 courseRepository
                         .findById(id)
@@ -93,46 +85,33 @@ public class CourseServicePagination implements CourseService {
                         course.getTags(),
                         course.getStudents());
         courseRepository.save(changedCourse);
-        return courseDto;
+        return changedCourse;
     }
 
-    @Override
-    public Collection<CourseDtoShort> findByParams(String courseName, LocalDate date, String tag, Integer pageNo, Integer pageSize, String sortBy) {
-        var paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        if (courseName != null) {
-            return findCoursesByName(courseName, paging);
-        } else if (date != null) {
-            return findCoursesByDate(date, paging);
-        } else if (tag != null) {
-            return findCoursesByTags(tag, paging);
-        } else {
-            return findAllCourses(paging);
-        }
-    }
 
     @Override
-    public List<CourseDtoShort> findAllCourses(Pageable paging) {
+    public List<Course> findAllCourses(Pageable paging) {
         var pagedResult = courseRepository.findAll(paging);
-        return pagedResult.stream().map(course -> new CourseDtoShort(course.getId(), course.getName(), course.getDescription())).collect(Collectors.toList());
+        return pagedResult.getContent();
     }
 
     @Override
-    public Collection<CourseDtoShort> findCoursesByDate(LocalDate date, Pageable paging) {
+    public Collection<Course> findCoursesByDate(LocalDate date, Pageable paging) {
         var pagedResult = courseRepository.findCoursesByStartAssignmentDateLessThanEqualAndEndAssignmentDateGreaterThanEqual(date, date, paging);
-        return pagedResult.stream().map(course -> new CourseDtoShort(course.getId(), course.getName(), course.getDescription())).collect(Collectors.toList());
+        return pagedResult.getContent();
     }
 
     @Override
-    public Collection<CourseDtoShort> findCoursesByTags(String tagName, Pageable paging) {
-        var tags = tagRepository.findTagsByNameContains(tagName);
+    public Collection<Course> findCoursesByTags(Collection<String> tagNames, Pageable paging) {
+       var tags = tagNames.stream().map(tag -> tagRepository.findTagsByNameContains(tag)).flatMap(Collection::stream).collect(Collectors.toList());
         var pagedResult = courseRepository.findCoursesByTagsIn(tags, paging);
-        return pagedResult.stream().map(course -> new CourseDtoShort(course.getId(), course.getName(), course.getDescription())).collect(Collectors.toList());
+        return pagedResult.getContent();
     }
 
     @Override
-    public Collection<CourseDtoShort> findCoursesByName(String name, Pageable paging) {
+    public Collection<Course> findCoursesByName(String name, Pageable paging) {
         var pagedResult = courseRepository.findCoursesByNameContains(name, paging);
-        return pagedResult.stream().map(course -> new CourseDtoShort(course.getId(), course.getName(), course.getDescription())).collect(Collectors.toList());
+        return pagedResult.getContent();
     }
 
 }

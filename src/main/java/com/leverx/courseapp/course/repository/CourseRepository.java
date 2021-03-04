@@ -12,7 +12,7 @@ import java.util.Collection;
 
 public interface CourseRepository extends PagingAndSortingRepository<Course, Integer> {
 
-    Page<Course> findCoursesByStartAssignmentDateLessThanEqualAndEndAssignmentDateGreaterThanEqual(LocalDate date1, LocalDate date2, Pageable pageable);
+    Page<Course> findCoursesByStartAssignmentDateLessThanEqualAndEndAssignmentDateGreaterThanEqual(LocalDate date, LocalDate date1, Pageable pageable);
 
     Page<Course> findCoursesByTagsIn(Collection<Tag> tags, Pageable pageable);
 

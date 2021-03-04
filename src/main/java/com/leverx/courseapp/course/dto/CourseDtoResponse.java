@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
-public class CourseDtoShort {
+public class CourseDtoResponse {
 
   private int id;
 

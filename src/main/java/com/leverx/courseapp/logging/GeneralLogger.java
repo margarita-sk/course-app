@@ -1,6 +1,6 @@
 package com.leverx.courseapp.logging;
 
-import com.leverx.courseapp.user.dto.StudentDtoRegistration;
+import com.leverx.courseapp.user.dto.StudentDtoParam;
 import lombok.extern.log4j.Log4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -31,8 +31,8 @@ public class GeneralLogger {
         log.info("Changes were successful ");
         var args = joinPoint.getArgs();
         Arrays.stream(args).forEach(o -> {
-            if (o.getClass().equals(StudentDtoRegistration.class)) {
-                var student = (StudentDtoRegistration) o;
+            if (o.getClass().equals(StudentDtoParam.class)) {
+                var student = (StudentDtoParam) o;
                 student.setPassword(null);
             }
             log.info(o);
