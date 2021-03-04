@@ -1,4 +1,4 @@
-package com.leverx.courseapp.course.controller;
+package com.leverx.courseapp.course.error;
 
 import com.leverx.courseapp.course.exception.CannotDeleteCourseException;
 import com.leverx.courseapp.course.exception.CourseAlreadyExsistsException;
@@ -20,11 +20,6 @@ public class CourseControllerAdvice {
   public ResponseEntity<Object> handleNoSuchCourseException(NoSuchCourseException ex) {
     var body = Map.of("timestamp", LocalDateTime.now(), "message", ex.getMessage());
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-  }
-
-  @ExceptionHandler(AccessDeniedException.class)
-  public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-    return new ResponseEntity<>(Map.of("timestamp", LocalDateTime.now(), "message", ex.getMessage()), HttpStatus.UNAUTHORIZED);
   }
 
   @ExceptionHandler(CannotDeleteCourseException.class)

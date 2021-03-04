@@ -1,87 +1,65 @@
 package com.leverx.courseapp.user.service;
 
-import com.leverx.courseapp.course.dto.CourseDtoShort;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.repository.CourseRepository;
-import com.leverx.courseapp.logging.annotations.DbChangeable;
-import com.leverx.courseapp.user.dto.StudentDto;
+import com.leverx.courseapp.logging.annotations.Changeable;
+import com.leverx.courseapp.user.dto.StudentDtoParam;
 import com.leverx.courseapp.user.exception.NoSuchStudentException;
 import com.leverx.courseapp.user.model.Student;
 import com.leverx.courseapp.user.repository.StudentRepository;
-import com.okta.sdk.client.Client;
+import com.leverx.courseapp.user.repository.UserClient;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
-    private final Client client;
-
-    @Value("${okta.group.users.id}")
-    private String groupId;
-
-    public StudentServiceImpl(
-            StudentRepository studentRepository, CourseRepository courseRepository, Client client) {
-        this.studentRepository = studentRepository;
-        this.courseRepository = courseRepository;
-        this.client = client;
-    }
+    private final UserClient client;
 
     @Override
-    public Collection<StudentDto> receiveAll(Integer pageNo, Integer pageSize, String sortBy) {
+    public Collection<Student> receiveAll(Integer pageNo, Integer pageSize, String sortBy) {
         var paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        var students = studentRepository.findAll(paging);
-        var studentsDto = students.stream().map(student -> new StudentDto(student.getEmail(), student.getFirstName(), student.getLastName(), student.getFaculty(), student.getCourses())).collect(Collectors.toList());
-        return studentsDto;
+        var students = studentRepository.findAll(paging).getContent();
+        return students;
     }
 
     @Override
-    public StudentDto findStudentByEmail(String email) {
+    public Student findStudentByEmail(String email) {
         var student = studentRepository.findStudentByEmail(email);
-        var studentDto = new StudentDto(student.getEmail(), student.getFirstName(), student.getLastName(), student.getFaculty(), student.getCourses());
-        return studentDto;
+        return student;
     }
 
     @Override
-    public Collection<CourseDtoShort> receiveCoursesByStudent(String email) {
+    public Collection<Course> receiveCoursesByStudent(String email) {
         var student = studentRepository.findStudentByEmail(email);
         var courses = student.getCourses();
-        var coursesDto =
-                courses.stream()
-                        .map(course -> new CourseDtoShort(course.getId(), course.getName(), course.getDescription()))
-                        .collect(Collectors.toList());
-        return coursesDto;
+        return courses;
     }
 
     @Override
-    @DbChangeable
+    @Changeable
     public void deleteStudent(String email) {
-        var student = studentRepository.findStudentByEmail(email);
+        var student = studentRepository.findById(email).orElseThrow(NoSuchStudentException::new);
+        client.deleteUser(email);
         studentRepository.delete(student);
-        var user =
-                client.listUsers().stream()
-                        .filter(searchedUser -> searchedUser.getProfile().getEmail().equals(email))
-                        .findFirst()
-                        .orElseThrow(NoSuchStudentException::new);
-        user.deactivate();
-        user.delete();
     }
 
     @Override
-    public StudentDto registerStudentInDb(StudentDto studentDto) {
-        studentRepository.save(new Student(studentDto.getEmail(), studentDto.getFirstName(), studentDto.getLastName(), studentDto.getFaculty()));
-        var student = findStudentByEmail(studentDto.getEmail());
+    @Changeable
+    public Student addStudent(StudentDtoParam studentDto) {
+        var student = new Student(studentDto.getEmail(), studentDto.getFirstName(), studentDto.getLastName(), studentDto.getFaculty());
+        client.addUser(studentDto);
+        studentRepository.save(student);
         return student;
     }
 

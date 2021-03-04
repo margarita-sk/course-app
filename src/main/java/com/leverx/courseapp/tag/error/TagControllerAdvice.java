@@ -1,6 +1,6 @@
-package com.leverx.courseapp.task.controller;
+package com.leverx.courseapp.tag.error;
 
-import com.leverx.courseapp.task.exception.NoSuchTaskException;
+import com.leverx.courseapp.tag.exception.TagNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -10,16 +10,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class TaskControllerAdvice {
+public class TagControllerAdvice {
 
-  @ExceptionHandler(NoSuchTaskException.class)
-  public ResponseEntity<Object> handleNoSuchTaskException(NoSuchTaskException ex) {
+  @ExceptionHandler(TagNotFoundException.class)
+  public ResponseEntity<Object> handleTagNotFoundException(TagNotFoundException ex) {
     var body = Map.of("timestamp", LocalDateTime.now(), "message", ex.getMessage());
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler(AccessDeniedException.class)
-  public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-    return new ResponseEntity<>(Map.of("message", ex.getMessage()), HttpStatus.UNAUTHORIZED);
-  }
 }
