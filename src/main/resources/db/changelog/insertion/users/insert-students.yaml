@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: EMAIL
-                  value: student@student.com
+                  value: student1@student.com
               - column:
                   name: FIRST_NAME
                   value: "Student"

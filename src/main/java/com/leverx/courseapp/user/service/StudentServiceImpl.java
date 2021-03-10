@@ -5,7 +5,6 @@ import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.repository.CourseRepository;
 import com.leverx.courseapp.logging.annotations.Changeable;
 import com.leverx.courseapp.user.dto.StudentDtoParam;
-import com.leverx.courseapp.user.exception.NoSuchStudentException;
 import com.leverx.courseapp.user.model.Student;
 import com.leverx.courseapp.user.repository.StudentRepository;
 import com.leverx.courseapp.user.repository.UserClient;
@@ -17,8 +16,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+
 
 @AllArgsConstructor
+@Transactional
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -40,18 +43,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Collection<Course> receiveCoursesByStudent(String email) {
-        var student = studentRepository.findStudentByEmail(email);
-        var courses = student.getCourses();
-        return courses;
-    }
-
-    @Override
     @Changeable
     public void deleteStudent(String email) {
-        var student = studentRepository.findById(email).orElseThrow(NoSuchStudentException::new);
-        client.deleteUser(email);
-        studentRepository.delete(student);
+        var studentToDelete = studentRepository.findById(email);
+        studentToDelete.ifPresent(student -> {
+            client.deleteUser(email);
+            studentRepository.delete(student);
+        });
     }
 
     @Override
@@ -68,22 +66,27 @@ public class StudentServiceImpl implements StudentService {
         var student = studentRepository.findStudentByEmail(email);
         var newCourse = receiveCourseById(courseId);
         var studentsCourses = student.getCourses();
-        studentsCourses.add(newCourse);
-        student.setCourses(studentsCourses);
-        student = studentRepository.save(student);
-        newCourse.setStudents(new ArrayList<>(newCourse.getStudents()));
-        newCourse.getStudents().add(student);
-        courseRepository.save(newCourse);
+        if (!studentsCourses.contains(newCourse)) {
+            studentsCourses.add(newCourse);
+            student.setCourses(studentsCourses);
+            student = studentRepository.save(student);
+            newCourse.setStudents(new ArrayList<>(newCourse.getStudents()));
+            newCourse.getStudents().add(student);
+            courseRepository.save(newCourse);
+        }
     }
 
     @Override
     public void disassignCourseToStudent(int courseId, String email) {
         var student = studentRepository.findStudentByEmail(email);
-        var courseToRemove = receiveCourseById(courseId);
-        var studentsCourses = student.getCourses();
-        studentsCourses.remove(courseToRemove);
-        student.setCourses(studentsCourses);
-        studentRepository.save(student);
+        var courseToRemove = courseRepository.findById(courseId);
+        courseToRemove.ifPresent(course -> {
+            var studentsCourses = student.getCourses();
+            studentsCourses.remove(course);
+            student.setCourses(studentsCourses);
+            studentRepository.save(student);
+        });
+
     }
 
     private Course receiveCourseById(int id) {

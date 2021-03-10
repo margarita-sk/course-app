@@ -14,6 +14,10 @@ import java.util.Collection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +28,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
 
     @Override
-    public Task receiveTaskById(int courseId, int taskId) {
+    public Task receiveTaskById(int courseId,  int taskId) {
         var course = findCourseById(courseId);
         var searchedTask =
                 course.getTasks().stream()
@@ -38,7 +42,7 @@ public class TaskServiceImpl implements TaskService {
     public Collection<Task> receiveAllTasksByCourse(int courseId) {
         var course = courseRepository.findById(courseId).orElseThrow(NoSuchCourseException::new);
         var tasks = course.getTasks();
-      return tasks;
+        return tasks;
     }
 
     @Override
@@ -80,15 +84,17 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Changeable
     public void deleteTask(int courseId, int taskId) {
-        var task = taskRepository.findById(taskId).orElseThrow(NoSuchTaskException::new);
-        taskRepository.delete(task);
+        var taskToDelete = taskRepository.findById(taskId);
+        taskToDelete.ifPresent(task -> {
+            taskRepository.delete(task);
 
-        var course = findCourseById(courseId);
-        var tasks = course.getTasks();
-        tasks.remove(task);
-        course.setTasks(tasks);
+            var course = findCourseById(courseId);
+            var tasks = course.getTasks();
+            tasks.remove(task);
+            course.setTasks(tasks);
+            courseRepository.save(course);
+        });
 
-        courseRepository.save(course);
     }
 
     private Course findCourseById(int courseId) {

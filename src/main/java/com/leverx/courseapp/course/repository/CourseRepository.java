@@ -17,4 +17,5 @@ public interface CourseRepository extends PagingAndSortingRepository<Course, Int
     Page<Course> findCoursesByTagsIn(Collection<Tag> tags, Pageable pageable);
 
     Page<Course> findCoursesByNameContains(String name, Pageable pageable);
+
 }

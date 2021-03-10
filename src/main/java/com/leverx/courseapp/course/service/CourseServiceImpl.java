@@ -1,29 +1,32 @@
 package com.leverx.courseapp.course.service;
 
-import com.leverx.courseapp.course.dto.CourseDto;
-import com.leverx.courseapp.course.dto.CourseDtoResponse;
-import com.leverx.courseapp.course.exception.CannotDeleteCourseException;
+import com.leverx.courseapp.course.dto.CourseDtoParam;
 import com.leverx.courseapp.course.exception.NoSuchCourseException;
 import com.leverx.courseapp.course.model.Course;
 import com.leverx.courseapp.course.repository.CourseRepository;
 import com.leverx.courseapp.logging.annotations.Changeable;
-import com.leverx.courseapp.tag.exception.TagNotFoundException;
 import com.leverx.courseapp.tag.repository.TagRepository;
+import com.leverx.courseapp.user.repository.StudentRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
+    private final StudentRepository studentRepository;
     private final TagRepository tagRepository;
 
     @Override
@@ -37,22 +40,18 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Changeable
-    public Course addCourse(CourseDto courseDto) {
+    public Course addCourse(CourseDtoParam courseDto) {
         var course =
                 new Course(
                         courseDto.getName(),
                         courseDto.getDescription(),
                         courseDto.getStartAssignmentDate(),
                         courseDto.getEndAssignmentDate());
-        var tags =
-                courseDto.getTags().stream()
-                        .map(
-                                tag ->
-                                        tagRepository.findTagsByNameContains(tag).stream()
-                                                .findFirst()
-                                                .orElseThrow(TagNotFoundException::new))
-                        .collect(Collectors.toList());
-        course.setTags(tags);
+        var tags = courseDto.getTags();
+        var searchedTags = StreamSupport
+                .stream(tagRepository.findAll().spliterator(), false)
+                .filter(tag -> tags.contains(tag.getName())).collect(Collectors.toList());
+        course.setTags(searchedTags);
         courseRepository.save(course);
         return course;
     }
@@ -60,16 +59,15 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Changeable
     public void removeCourseById(int id) {
-        var course =
+        var courseToDelelte =
                 courseRepository
-                        .findById(id)
-                        .orElseThrow(CannotDeleteCourseException::new);
-        courseRepository.delete(course);
+                        .findById(id);
+        courseToDelelte.ifPresent(course -> courseRepository.delete(course));
     }
 
     @Override
     @Changeable
-    public Course updateCourseById(int id, CourseDto courseDto) {
+    public Course updateCourseById(int id, CourseDtoParam courseDto) {
         var course =
                 courseRepository
                         .findById(id)
@@ -103,7 +101,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Collection<Course> findCoursesByTags(Collection<String> tagNames, Pageable paging) {
-       var tags = tagNames.stream().map(tag -> tagRepository.findTagsByNameContains(tag)).flatMap(Collection::stream).collect(Collectors.toList());
+        var tags = tagNames.stream().map(tag -> tagRepository.findTagsByNameContains(tag)).flatMap(Collection::stream).collect(Collectors.toList());
         var pagedResult = courseRepository.findCoursesByTagsIn(tags, paging);
         return pagedResult.getContent();
     }
@@ -112,6 +110,13 @@ public class CourseServiceImpl implements CourseService {
     public Collection<Course> findCoursesByName(String name, Pageable paging) {
         var pagedResult = courseRepository.findCoursesByNameContains(name, paging);
         return pagedResult.getContent();
+    }
+
+    @Override
+    public Collection<Course> findCoursesByStudent(String email) {
+        var student = studentRepository.findStudentByEmail(email);
+        var courses = student.getCourses();
+        return courses;
     }
 
 }

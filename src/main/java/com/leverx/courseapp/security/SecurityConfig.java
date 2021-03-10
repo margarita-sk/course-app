@@ -1,5 +1,6 @@
 package com.leverx.courseapp.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
@@ -16,18 +17,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers(HttpMethod.POST, "/students")
-//                .anonymous()
-//                .and()
-                .oauth2Client()
-                .and()
-                .oauth2Login();
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/students")
+                .anonymous()
+                .anyRequest()
+                .authenticated();
     }
 
     @Override
     @Profile("local")
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs",
                 "/configuration/ui",
                 "/swagger-resources/**",

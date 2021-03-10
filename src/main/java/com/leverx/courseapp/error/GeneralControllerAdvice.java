@@ -9,6 +9,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -25,5 +26,11 @@ public class GeneralControllerAdvice {
     public ResponseEntity<Object> handleResourceExceptionException(ResourceException ex) {
         return new ResponseEntity<>(
                 Map.of("timestamp", LocalDateTime.now(), "message", ex.getMessage()), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
+        return new ResponseEntity<>(
+                Map.of("timestamp", LocalDateTime.now(), "message", ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

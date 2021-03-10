@@ -1,16 +1,12 @@
 package com.leverx.courseapp.user.repository;
 
-import com.leverx.courseapp.user.dto.StudentDtoParam;
 import com.leverx.courseapp.user.dto.UserDtoParam;
 import com.leverx.courseapp.user.exception.NoSuchStudentException;
 import com.okta.sdk.client.Client;
-import com.okta.sdk.resource.user.User;
 import com.okta.sdk.resource.user.UserBuilder;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,7 +20,7 @@ public class StudentClient implements UserClient {
     private final Client client;
 
     @Override
-    public User addUser(UserDtoParam userDtoParam) {
+    public void addUser(UserDtoParam userDtoParam) {
         var user = UserBuilder.instance()
                 .addGroup(groupId)
                 .setEmail(userDtoParam.getEmail())
@@ -32,7 +28,6 @@ public class StudentClient implements UserClient {
                 .setLastName(userDtoParam.getLastName())
                 .setPassword(userDtoParam.getPassword())
                 .buildAndCreate(client);
-        return user;
     }
 
     @Override

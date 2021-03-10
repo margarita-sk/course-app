@@ -21,11 +21,15 @@
         <springCloud.version>1.2.2.RELEASE</springCloud.version>
 
         <hana.version>2.7.9</hana.version>
-
         <okta.version>2.0.1</okta.version>
+        <aspectjweaver.version>1.8.12</aspectjweaver.version>
+        <log4j.version>1.2.17</log4j.version>
 
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <spring-boot-starter-actuator.version>2.4.2</spring-boot-starter-actuator.version>
+        <spring-boot-starter-validator.version>2.4.3</spring-boot-starter-validator.version>
+
+        <spring-aop.version>5.0.1.RELEASE</spring-aop.version>
 
         <checkstyle-maven-plugin.version>3.1.1</checkstyle-maven-plugin.version>
         <spotless-maven-plugin.version>2.7.0</spotless-maven-plugin.version>
@@ -80,12 +84,6 @@
         <!-- Spring -->
 
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>${springfox-boot-starter.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
             <version>${spring-boot-starter-actuator.version}</version>
@@ -113,18 +111,30 @@
             <artifactId>spring-security-oauth2-client</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>${spring-boot-starter-validator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${springfox-boot-starter.version}</version>
+        </dependency>
+
 
         <!-- AOP -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-            <version>5.0.1.RELEASE</version>
+            <version>${spring-aop.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.8.12</version>
+            <version>${aspectjweaver.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -133,7 +143,7 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <version>${log4j.version}</version>
         </dependency>
 
         <dependency>
@@ -148,11 +158,11 @@
             <version>${liquibase.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.sap.foss.hana</groupId>
-            <artifactId>liquibase-hana</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.sap.foss.hana</groupId>-->
+<!--            <artifactId>liquibase-hana</artifactId>-->
+<!--            <version>1.0.0</version>-->
+<!--        </dependency>-->
 
         <!-- tests -->
         <dependency>

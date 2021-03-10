@@ -29,14 +29,6 @@ public class StudentsAssignmentToCoursesController {
     private final StudentService studentService;
 
     @PreAuthorize("hasAuthority('admins') or #email.equals(authentication.name)")
-    @GetMapping
-    public Collection<CourseDtoResponse> receiveCoursesByStudent(
-            JwtAuthenticationToken authentication, @RequestParam String email) {
-        var courses = studentService.receiveCoursesByStudent(email);
-        return transformCoursesIntoResponse(courses);
-    }
-
-    @PreAuthorize("hasAuthority('admins') or #email.equals(authentication.name)")
     @PutMapping
     public void assignCourseToStudent(
             JwtAuthenticationToken authentication,

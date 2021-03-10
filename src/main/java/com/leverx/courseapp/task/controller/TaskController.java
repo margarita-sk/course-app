@@ -12,7 +12,11 @@ import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 @RestController
 @AllArgsConstructor
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
                 @ApiResponse(code = 400, message = "Bad Request"),
                 @ApiResponse(code = 500, message = "Internal Server Error")
         })
+@Validated
 @RequestMapping(value = "/courses/{id}/tasks", produces = "application/json")
 public class TaskController {
 
@@ -33,7 +38,7 @@ public class TaskController {
                     @ApiResponse(code = 200, message = "OK")
             })
     @GetMapping("/{taskId}")
-    public TaskDto receiveTaskById(@PathVariable int id, @PathVariable int taskId) {
+    public TaskDto receiveTaskById(@PathVariable @Min(0) int id, @PathVariable @Min(0) int taskId) {
         var task = service.receiveTaskById(id, taskId);
         return transformTaskIntoDto(task);
     }
@@ -44,7 +49,7 @@ public class TaskController {
                     @ApiResponse(code = 200, message = "OK")
             })
     @GetMapping
-    public Collection<TaskDto> receiveTasksByCourse(@PathVariable int id) {
+    public Collection<TaskDto> receiveTasksByCourse(@PathVariable @Min(0) int id) {
         var tasks = service.receiveAllTasksByCourse(id);
         return transformTaskIntoDto(tasks);
     }
@@ -56,7 +61,7 @@ public class TaskController {
             })
     @PreAuthorize("hasAuthority('admins')")
     @PostMapping
-    public void addTask(@PathVariable int id, @RequestBody TaskDto taskDto) {
+    public void addTask(@PathVariable int id, @RequestBody @Valid TaskDto taskDto) {
         service.addTask(id, taskDto);
     }
 
@@ -67,7 +72,7 @@ public class TaskController {
             })
     @PreAuthorize("hasAuthority('admins')")
     @DeleteMapping("/{taskId}")
-    public void deleteTask(@PathVariable int id, @PathVariable int taskId) {
+    public void deleteTask(@PathVariable @Min(0) int id, @PathVariable @Min(0) int taskId) {
         service.deleteTask(id, taskId);
     }
 
@@ -79,7 +84,7 @@ public class TaskController {
     @PreAuthorize("hasAuthority('admins')")
     @PutMapping("/{taskId}")
     public TaskDto editTask(
-            @PathVariable int id, @PathVariable int taskId, @RequestBody TaskDto taskDto) {
+            @PathVariable @Min(0) int id, @PathVariable @Min(0) int taskId, @RequestBody @Valid TaskDto taskDto) {
         var task = service.editTask(id, taskDto, taskId);
         return transformTaskIntoDto(task);
     }
