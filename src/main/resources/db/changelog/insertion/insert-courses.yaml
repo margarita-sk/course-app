@@ -11,7 +11,7 @@ databaseChangeLog:
                   value: "Baking cookies"
               - column:
                   name: DESCRIPTION
-                  value: "You will learn everything about cookies "
+                  value: "You will learn everything about cookies"
               - column:
                   name: START_ASSIGNMENT_DATE
                   value: "2021-02-02"

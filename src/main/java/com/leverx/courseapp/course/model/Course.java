@@ -6,6 +6,7 @@ import com.leverx.courseapp.user.model.Student;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString(exclude = {"students", "tags", "tasks"})
 @Table(name = "COURSES")
 public class Course {
 
@@ -26,22 +28,18 @@ public class Course {
     @Column(name = "ID")
     private int id;
 
-    @NonNull
     @NotNull
     @Column(name = "NAME")
     private String name;
 
-    @NonNull
     @NotNull
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @NonNull
     @DateTimeFormat
     @Column(name = "START_ASSIGNMENT_DATE")
     private LocalDate startAssignmentDate;
 
-    @NonNull
     @DateTimeFormat
     @Column(name = "END_ASSIGNMENT_DATE")
     private LocalDate endAssignmentDate;
@@ -64,10 +62,23 @@ public class Course {
     private Collection<Student> students;
 
 
-    public Course(@NonNull @NotNull String name, @NonNull @NotNull String description, @NonNull LocalDate startAssignmentDate, @NonNull LocalDate endAssignmentDate) {
+    public Course( @NotNull String name,  @NotNull String description, LocalDate startAssignmentDate, LocalDate endAssignmentDate) {
         this.name = name;
         this.description = description;
         this.startAssignmentDate = startAssignmentDate;
         this.endAssignmentDate = endAssignmentDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return name.equals(course.name) && description.equals(course.description) && startAssignmentDate.equals(course.startAssignmentDate) && endAssignmentDate.equals(course.endAssignmentDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description, startAssignmentDate, endAssignmentDate);
     }
 }

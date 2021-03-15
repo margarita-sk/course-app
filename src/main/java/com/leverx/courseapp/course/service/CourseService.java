@@ -33,4 +33,5 @@ public interface CourseService {
     Collection<Course> findCoursesByName(String name, Pageable paging);
 
     Collection<Course> findCoursesByStudent(String email);
+
 }

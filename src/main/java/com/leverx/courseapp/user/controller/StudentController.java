@@ -62,6 +62,7 @@ public class StudentController {
     }
 
     @PreAuthorize("hasAuthority('admins') or #email.equals(#user.email)")
+//    @PreAuthorize("hasAuthority('admins') or #email.equals(authentication.name)")
     @GetMapping("/account")
     public StudentDtoResponse findStudentByEmail(@AuthenticationPrincipal OidcUser user, @RequestParam @Pattern(message = "email is invalid", regexp = emailRegexp) String email) {
         var student = studentService.findStudentByEmail(email);

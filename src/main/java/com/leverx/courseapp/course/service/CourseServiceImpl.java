@@ -8,6 +8,7 @@ import com.leverx.courseapp.logging.annotations.Changeable;
 import com.leverx.courseapp.tag.repository.TagRepository;
 import com.leverx.courseapp.user.repository.StudentRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
@@ -90,7 +91,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> findAllCourses(Pageable paging) {
         var pagedResult = courseRepository.findAll(paging);
-        return pagedResult.getContent();
+        var courses = pagedResult.getContent();
+        return courses;
     }
 
     @Override

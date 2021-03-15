@@ -16,15 +16,5 @@ import java.util.ArrayList;
 @SpringBootTest
 class CourseAppApplicationTests {
 
-//    @Autowired
-//    private CourseService service;
-//
-//    @Test
-//    public void testLoggable() {
-//        var list = new ArrayList<String>();
-////        list.add("test");
-////
-////
-////        assertThat(service.addCourse(null)).isNotNull();
-//    }
+
 }
